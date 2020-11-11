@@ -1,7 +1,7 @@
  import React, { useState } from 'react';
 import { SafeAreaView, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import UserAvatar from '../../components/UserAvatar'
 import axios from 'axios'
 
 const ok = require('../../assets/ok.png')
@@ -11,13 +11,32 @@ import styles from './styles'
 export default function Login({ navigation }) {
 
   const [ user, setUser ] = useState('')
-
+  const [ avatar, setAvatar ] = useState('https://cdn.pixabay.com/photo/2016/03/31/20/27/avatar-1295773_960_720.png')
+  
+  const listAvatarUrl = [
+    'https://cdn.pixabay.com/photo/2016/03/31/20/27/avatar-1295773_960_720.png',
+    'https://cdn.pixabay.com/photo/2016/09/01/08/24/smiley-1635449_960_720.png',
+    'https://cdn.pixabay.com/photo/2016/04/01/12/11/avatar-1300582_1280.png',
+    'https://cdn.pixabay.com/photo/2016/03/31/19/58/avatar-1295429_960_720.png',
+    'https://cdn.pixabay.com/photo/2016/12/13/16/17/dancer-1904467_960_720.png',
+    'https://cdn.pixabay.com/photo/2016/09/01/08/25/smiley-1635454_960_720.png',
+    'https://cdn.pixabay.com/photo/2016/04/01/10/04/amusing-1299756_960_720.png',
+    'https://cdn.pixabay.com/photo/2016/04/01/10/04/amusing-1299757_960_720.png',
+    'https://cdn.pixabay.com/photo/2013/07/13/12/06/woman-159169_960_720.png',
+    'https://cdn.pixabay.com/photo/2016/03/31/20/11/avatar-1295575_960_720.png',
+    'https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_960_720.png',
+    'https://cdn.pixabay.com/photo/2016/09/01/08/25/smiley-1635456_960_720.png',
+    'https://cdn.pixabay.com/photo/2016/11/01/21/11/avatar-1789663_960_720.png',
+    'https://cdn.pixabay.com/photo/2016/04/01/10/04/amusing-1299761_960_720.png',
+    'https://cdn.pixabay.com/photo/2016/03/31/20/31/amazed-1295833_960_720.png',
+    'https://cdn.pixabay.com/photo/2013/07/12/16/34/vampire-151178_960_720.png'
+  ]
   async function goToHome(){
 
     axios.post('http://162.241.90.38:7003/v1/usuario', 
       {
         "nick": user,
-        "avatarUrl": "https://cdn.pixabay.com/photo/2016/03/31/20/27/avatar-1295773_960_720.png"
+        "avatarUrl": avatar
       }
     )
     .then(async function (response) {
@@ -32,6 +51,25 @@ export default function Login({ navigation }) {
       console.log(error);
     });
 
+  }
+
+  renderGridAvatar = () => {
+    return listAvatarUrl.map(item => (
+      <UserAvatar uri={item}
+        selected={item === avatar }
+        style={{
+          width: 60,
+          height: 60,
+          marginLeft: 10,
+          marginRight: 10,
+          marginTop: 10}}
+        onPress={()=> setAvatar(item)}  
+      />
+    ));
+  }
+
+  selectedAvatar = (item) => {
+    console.log('SelectedAvatar: ' + item)
   }
 
     return (
@@ -54,8 +92,14 @@ export default function Login({ navigation }) {
             <Image source={ok}></Image>
           </TouchableOpacity>
         </View>
-        
 
+        <View style={{flex: 15, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
+          <View style={styles.nickContainer}>
+            <Text style={styles.nickTitle}>Qual avatar você se identifica?</Text>
+          </View>
+
+          {renderGridAvatar()}
+        </View>
       </SafeAreaView>
     );
 }

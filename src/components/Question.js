@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Avatar } from "react-native-elements";
+import UserAvatar from './UserAvatar'
 
 const comentarios = require('../assets/comentarios.png')
 var moment = require('moment'); // require
@@ -18,14 +18,7 @@ const Question = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        {/* <View style={styles.avatar}></View> */}
-        <Avatar
-          rounded
-          icon={{name: 'user', type: 'font-awesome'}}
-          onPress={() => console.log("Works!")}
-          activeOpacity={0.7}
-          containerStyle={{backgroundColor: 'red', marginRight: 10}}
-        />  
+        <UserAvatar uri={props.item.usuarioAvatar} />
         <Text style={styles.userName}>{props.item.usuarioNick}</Text>
         <View style={styles.timeContainer}>
           {/* <Text style={styles.time}>{props.item.dataHora}</Text> */}
@@ -66,15 +59,7 @@ const styles = StyleSheet.create({
     alignContent: 'center'
   },
 
-  avatar: {
-    backgroundColor: '#0f4c75',
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-  },
-
   userName: {
-    marginLeft: -50,
     fontSize: 14,
     fontWeight: 'bold',
     color: '#3282b8'

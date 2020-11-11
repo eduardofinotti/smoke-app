@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, Text, View, TouchableOpacity, Image, StyleSheet, FlatList } from 'react-native';
-import { Avatar } from "react-native-elements";
-
+import UserAvatar from '../../components/UserAvatar'
 import axios from 'axios'
 
 const pen = require('../../assets/caneta.png')
@@ -37,15 +36,7 @@ const Details = ({ route, navigation }) => {
       <SafeAreaView style={styles.container}>
         <View style={styles.containerMessage}>
           <View style={styles.header}>
-            {/* <View style={styles.avatar}></View> */}
-            <Avatar
-            style={styles.avatar}
-              rounded
-              icon={{name: 'user', type: 'font-awesome'}}
-              onPress={() => console.log("Works!")}
-              activeOpacity={0.7}
-              containerStyle={{backgroundColor: 'red', marginRight: 10, marginTop: 0}}
-            />
+            <UserAvatar uri={item.usuarioAvatar} />
             <Text style={styles.userName}>{item.usuarioNick}</Text>
             <View style={styles.timeContainer}>
               {/* <Text style={styles.time}>{props.item.dataHora}</Text> */}
@@ -83,14 +74,7 @@ const Coment = (props) => {
 
   return(
     <View style={{flexDirection: 'row', height: 55}}>
-      {/* <Image source={{uri: props.item.usuarioAvatar}} style={{width: 40, height: 60}}></Image> */}
-      <Avatar
-        rounded
-        icon={{name: 'user', type: 'font-awesome'}}
-        onPress={() => console.log("Works!")}
-        activeOpacity={0.7}
-        containerStyle={{backgroundColor: 'green', marginRight: 10}}
-      />
+      <UserAvatar uri={props.item.usuarioAvatar} />
       <Text>{props.item.texto}</Text>
     </View>
   )
@@ -118,13 +102,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     alignContent: 'center'
-  },
-
-  avatar: {
-    backgroundColor: '#0f4c75',
-    width: 30,
-    height: 30,
-    borderRadius: 15,
   },
 
   userName: {

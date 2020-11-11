@@ -14,14 +14,14 @@ const data = [
     bg: '#0f4c75',
   },
   {
-    title: 'você pode abrir uma discução a qualquer comento!',
+    title: 'você pode abrir uma discussão a qualquer comento!',
     text: 'basta escolher um assunto',
     image: require('../../assets/ok.png'),
     bg: '#0f4c75',
   },
   {
     title: 'responda as mensagens de outras pessoas',
-    text: "e torne a discição ainda melhor",
+    text: "e torne a discussão ainda melhor",
     image: require('../../assets/ok.png'),
     bg: '#0f4c75',
   },
