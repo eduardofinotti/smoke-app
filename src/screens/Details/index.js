@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, View, TouchableOpacity, Image, StyleSheet, FlatList } from 'react-native';
+import { SafeAreaView, Text, View, TouchableOpacity, Image, StyleSheet, FlatList, TextInput } from 'react-native';
 import { Avatar } from "react-native-elements";
 
 import axios from 'axios'
@@ -7,6 +7,7 @@ import axios from 'axios'
 const pen = require('../../assets/caneta.png')
 const comentarios = require('../../assets/comentarios.png')
 const next = require('../../assets/next.png')
+const back = require('../../assets/back.png')
 
 const Details = ({ route, navigation }) => {
 
@@ -35,11 +36,15 @@ const Details = ({ route, navigation }) => {
 
     return (
       <SafeAreaView style={styles.container}>
+
+        <TouchableOpacity style={styles.header}>
+          <Image source={back} />
+        </TouchableOpacity>
+
         <View style={styles.containerMessage}>
-          <View style={styles.header}>
+          <View style={styles.headerMessage}>
             {/* <View style={styles.avatar}></View> */}
             <Avatar
-            style={styles.avatar}
               rounded
               icon={{name: 'user', type: 'font-awesome'}}
               onPress={() => console.log("Works!")}
@@ -60,8 +65,26 @@ const Details = ({ route, navigation }) => {
           </View> 
           
           <View style={styles.footer, {flexDirection: 'row', alignItems: 'center',}} >
-            {/* <Image source={comentarios} style={styles.imageComents}/> */}
+            <Image source={{uri: comentarios}} />
             <Text style={styles.time}>234 comentários </Text>
+          </View>
+        </View>
+
+        <View>
+          <View style={styles.textAreaSendComent}>
+            <Avatar
+              rounded
+              icon={{name: 'user', type: 'font-awesome'}}
+              onPress={() => console.log("Works!")}
+              activeOpacity={0.7}
+              containerStyle={{backgroundColor: 'blue', marginRight: 5, }}
+            />
+            <TextInput style={styles.nickInput} 
+              placeholder='Comente...'
+              placeholderTextColor='#2E6B93'  
+              // onChangeText={(text => {setUser(text)})}
+              value="user"
+            />
           </View>
         </View>
 
@@ -104,16 +127,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#bbe1fa'
   },
 
+  header: {
+    marginTop: '10%'
+  },  
+
   containerMessage: {
-    marginTop: 10,
     backgroundColor: '#89B4D1',
     height: 160,
     borderRadius: 10,
     padding: 8,
-    marginTop: '10%'
+    marginTop: '5%'
   },
 
-  header: {
+  headerMessage: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -164,16 +190,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     height: 30,
-    // backgroundColor: '#99C7E5',
     padding: 7,
     borderRadius: 10
   },
 
-  imageComents: {
-    width: 17,
-    height: 17,
-    marginHorizontal: 7
-  }
+  textAreaSendComent:{
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    marginTop: 10,
+    borderRadius: 15,
+    height: 40,
+    paddingHorizontal: 8,
+    alignItems: 'center'
+  },
 
 });
 
