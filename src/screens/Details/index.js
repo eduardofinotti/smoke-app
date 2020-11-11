@@ -65,7 +65,7 @@ const Details = ({ route, navigation }) => {
 
         <View>
           <View style={styles.textAreaSendComent}>
-            <UserAvatar uri={props.item.usuarioAvatar} />
+            <UserAvatar uri={item.usuarioAvatar} />
             <TextInput style={styles.nickInput} 
               placeholder='Comente...'
               placeholderTextColor='#2E6B93'  
