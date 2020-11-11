@@ -65,13 +65,7 @@ const Details = ({ route, navigation }) => {
 
         <View>
           <View style={styles.textAreaSendComent}>
-            <Avatar
-              rounded
-              icon={{name: 'user', type: 'font-awesome'}}
-              onPress={() => console.log("Works!")}
-              activeOpacity={0.7}
-              containerStyle={{backgroundColor: 'blue', marginRight: 5, }}
-            />
+            <UserAvatar uri={props.item.usuarioAvatar} />
             <TextInput style={styles.nickInput} 
               placeholder='Comente...'
               placeholderTextColor='#2E6B93'  
