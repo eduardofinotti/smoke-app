@@ -97,7 +97,7 @@ export default function Login({ navigation }) {
     }
 
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <View style={styles.titleContainer}>
           
           <View style={{paddingTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -166,6 +166,6 @@ export default function Login({ navigation }) {
           </View>
         </Modal>
 
-      </SafeAreaView>
+      </View>
     );
 }
