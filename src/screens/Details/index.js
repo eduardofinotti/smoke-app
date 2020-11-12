@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import UserAvatar from '../../components/UserAvatar'
 import { SafeAreaView, Text, View, TouchableOpacity, Image, StyleSheet, FlatList, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import axios from 'axios'
 
 const pen = require('../../assets/caneta.png')
-const comentarios = require('../../assets/comentarios.png')
+const comentLogo = require('../../assets/comentarios.png')
 const next = require('../../assets/next.png')
 const back = require('../../assets/back.png')
 
@@ -17,9 +18,17 @@ const Details = ({ route, navigation }) => {
 
   const [comentarios, setComentarios] = useState('')
   const [fetching, setFetching] = useState(false)
+  
+  const [userAvatar, setUserAvatar] = useState('https://cdn.pixabay.com/photo/2013/07/12/16/34/vampire-151178_960_720.png')
 
   useEffect(()=>{
     async function getComents() {
+
+      var userAvatar = await AsyncStorage.getItem('@user_avatar')
+      await setUserAvatar(userAvatar)
+
+      console.log('avatar: ', userAvatar)
+
       await axios.get(`http://162.241.90.38:7003/v1/mensagem/${item.id}/comentario`)
       .then(async function (response) {
         // console.log(response.data)
@@ -32,8 +41,6 @@ const Details = ({ route, navigation }) => {
     getComents()
   }, [])
 
-  
-
     return (
       <SafeAreaView style={styles.container}>
 
@@ -42,12 +49,11 @@ const Details = ({ route, navigation }) => {
         </TouchableOpacity>
 
         <View style={styles.containerMessage}>
-          <View style={styles.header}>
+          <View style={styles.headerMessage}>
             <UserAvatar uri={item.usuarioAvatar} />
             <Text style={styles.userName}>{item.usuarioNick}</Text>
             <View style={styles.timeContainer}>
-              {/* <Text style={styles.time}>{props.item.dataHora}</Text> */}
-              <Text style={styles.time}>7 horas</Text>
+              <Text style={styles.time}>{item.timeout}</Text>
             </View>
           </View>
         
@@ -58,14 +64,14 @@ const Details = ({ route, navigation }) => {
           </View> 
           
           <View style={styles.footer, {flexDirection: 'row', alignItems: 'center',}} >
-            <Image source={{uri: comentarios}} />
+            <Image source={comentLogo} />
             <Text style={styles.time}>234 comentários </Text>
           </View>
         </View>
 
         <View>
           <View style={styles.textAreaSendComent}>
-            <UserAvatar uri={item.usuarioAvatar} />
+            <UserAvatar uri={userAvatar} />
             <TextInput style={styles.nickInput} 
               placeholder='Comente...'
               placeholderTextColor='#2E6B93'  
@@ -103,12 +109,12 @@ const styles = StyleSheet.create({
 
   container:{
     flex: 1,
-    padding: 20,
-    backgroundColor: '#bbe1fa'
+    backgroundColor: '#bbe1fa',
+    paddingLeft: 20
   },
 
   header: {
-    marginTop: '10%'
+    marginLeft: 20
   },  
 
   containerMessage: {
@@ -116,7 +122,8 @@ const styles = StyleSheet.create({
     height: 160,
     borderRadius: 10,
     padding: 8,
-    marginTop: '5%'
+    marginTop: '5%',
+    marginHorizontal: 20
   },
 
   headerMessage: {

@@ -31,6 +31,7 @@ export default function Login({ navigation }) {
     'https://cdn.pixabay.com/photo/2016/03/31/20/31/amazed-1295833_960_720.png',
     'https://cdn.pixabay.com/photo/2013/07/12/16/34/vampire-151178_960_720.png'
   ]
+  
   async function goToHome(){
 
     axios.post('http://162.241.90.38:7003/v1/usuario', 
@@ -44,7 +45,9 @@ export default function Login({ navigation }) {
       console.log(response.data.nick + ' - ' + response.data.id)
 
       await AsyncStorage.setItem('@user', response.data.nick)
+      await AsyncStorage.setItem('@user_avatar', avatar)
       await AsyncStorage.setItem('@user_id', String(response.data.id))
+
       navigation.navigate('Home')
     })
     .catch(function (error) {
@@ -58,24 +61,22 @@ export default function Login({ navigation }) {
       <UserAvatar uri={item}
         selected={item === avatar }
         style={{
-          width: 60,
-          height: 60,
+          width: 54,
+          height: 54,
           marginLeft: 10,
           marginRight: 10,
-          marginTop: 10}}
+          marginTop: 10,
+          marginBottom: 10
+        }}
         onPress={()=> setAvatar(item)}  
       />
     ));
   }
 
-  selectedAvatar = (item) => {
-    console.log('SelectedAvatar: ' + item)
-  }
-
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.nickContainer}>
-          <Text style={styles.nickTitle}>escolha um apelido:</Text>
+          <Text style={styles.nickTitle}>escolha um apelido</Text>
         </View>
 
         <View style={styles.inputContainer}>
@@ -87,18 +88,18 @@ export default function Login({ navigation }) {
           />
         </View>
 
+        <View style={styles.avatarContainer}>
+          <Text style={styles.nickTitle}>escolha seu avatar</Text>
+        </View>
+
+        <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start', marginLeft: 20, marginTop: 10}}>
+          {renderGridAvatar()}
+        </View>
+
         <View style={styles.readyContainer} >
           <TouchableOpacity onPress={goToHome}>
             <Image source={ok}></Image>
           </TouchableOpacity>
-        </View>
-
-        <View style={{flex: 15, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
-          <View style={styles.nickContainer}>
-            <Text style={styles.nickTitle}>Qual avatar você se identifica?</Text>
-          </View>
-
-          {renderGridAvatar()}
         </View>
       </SafeAreaView>
     );

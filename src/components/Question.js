@@ -7,6 +7,14 @@ const comentarios = require('../assets/comentarios.png')
 var moment = require('moment'); // require
 
 const Question = (props) => {
+
+  var tempo = props.item.timeout.split(':')[0]
+
+  if(Number(tempo) < 13){
+    tempo = 'falta menos de 1h'
+  } else {
+    tempo = 'faltam ' + tempo + 'h'
+  }
   
   const navigation = useNavigation();
 
@@ -18,11 +26,12 @@ const Question = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <UserAvatar uri={props.item.usuarioAvatar} />
-        <Text style={styles.userName}>{props.item.usuarioNick}</Text>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <UserAvatar uri={props.item.usuarioAvatar} />
+          <Text style={styles.userName}>{props.item.usuarioNick}</Text>
+        </View>
         <View style={styles.timeContainer}>
-          {/* <Text style={styles.time}>{props.item.dataHora}</Text> */}
-          <Text style={styles.time}>7 horas</Text>
+          <Text style={styles.time}>{tempo}</Text>
         </View>
       </View>
       
@@ -47,7 +56,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 10,
     backgroundColor: '#89B4D1',
-    height: 160,
+    height: 170,
     borderRadius: 10,
     padding: 8
   },
@@ -55,18 +64,18 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    alignContent: 'center'
+    alignContent: 'center',
+    justifyContent: 'space-between'
   },
 
   userName: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#3282b8'
+    color: '#3282b8',
+    marginLeft: 5
   },
 
   timeContainer: {
-    width: '55%',
     alignItems: 'flex-end',
   },
 
