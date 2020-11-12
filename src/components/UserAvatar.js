@@ -14,8 +14,6 @@ const UserAvatar = props => {
     black = true
   }
 
-  console.log(black)
-
   return (
 
     <View style={[black? styles.black: '', styles.avatarContainer]}>
@@ -47,7 +45,6 @@ const styles = StyleSheet.create({
   avatarContainer: {
     borderRadius: 40
   }
-
 
 });
 
