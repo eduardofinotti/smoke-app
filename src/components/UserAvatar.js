@@ -4,12 +4,21 @@ import { Avatar, Icon } from "react-native-elements";
 
 const UserAvatar = props => {
   let styleAvatar = styles.avatar
+  
   if(props.style) {
     styleAvatar = props.style
-  }
+  }  
   
+  var black = false
+  if(props.selected) {
+    black = true
+  }
+
+  console.log(black)
+
   return (
-    <View>
+
+    <View style={[black? styles.black: '', styles.avatarContainer]}>
       <Avatar
         style={styleAvatar}
         rounded
@@ -17,18 +26,10 @@ const UserAvatar = props => {
           uri: props.uri
         }}
         onPress={() => {
-          if(props.onPress) props.onPress("Works!")
+          if(props.onPress) props.onPress()
         }}
         activeOpacity={0.7}
       />
-      { props.selected ? 
-        <Icon
-          name='checkmark-circle-outline'
-          type='ionicon'
-          color='#20b307'
-          size={20}
-        /> : null
-      }
     </View>
     );
 }
@@ -37,7 +38,17 @@ const styles = StyleSheet.create({
   avatar: {
     width: 35,
     height: 35
+  },
+
+  black:{
+    backgroundColor: '#0f4c75'
+  },
+
+  avatarContainer: {
+    borderRadius: 40
   }
+
+
 });
 
 export default UserAvatar

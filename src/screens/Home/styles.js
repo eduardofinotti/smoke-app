@@ -13,10 +13,9 @@ export default StyleSheet.create({
     },
 
     wellcome:{
-        marginBottom: 10,
         color: '#3282b8',
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: 14
     },
 
     title:{

@@ -8,7 +8,7 @@ export default StyleSheet.create({
     },
 
     nickContainer:{
-        marginTop: 100,
+        marginTop: 50,
         marginHorizontal: 30
     },
 
@@ -20,7 +20,7 @@ export default StyleSheet.create({
     
     inputContainer:{
         backgroundColor: '#0f4c75',
-        marginTop: 20,
+        marginTop: 10,
         borderRadius: 20,
         paddingLeft: 15,
         height: 50,
@@ -36,10 +36,13 @@ export default StyleSheet.create({
     },
 
     readyContainer: {
-        flex: 1,
         alignItems: 'flex-end',
-        paddingTop: 20,
+        marginHorizontal: 30,
+    },
+
+    avatarContainer:{
+        marginTop: 50,
         marginHorizontal: 30
-    }
+    },
 
 })

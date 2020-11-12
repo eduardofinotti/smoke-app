@@ -13,12 +13,14 @@ const comentarios = require('../../assets/comentarios.png')
 const next = require('../../assets/next.png')
 
 import styles from './styles'
+import UserAvatar from '../../components/UserAvatar';
 
 export default function Login({ navigation }) {
 
     const [modalVisible, setModalVisible] = useState(false)
     const [user, setUser] = useState('')
     const [userId, setUserId] = useState('')
+    const [userAvatar, setUserAvatar] = useState('')
     const [fetching, setFetching] = useState(false)
     const [discuss, setDiscuss] = useState()
     const [message, setMessage] = useState()
@@ -26,16 +28,21 @@ export default function Login({ navigation }) {
     const [page, setPage] = useState(0)
 
     useEffect(() => {
+
+      // AsyncStorage.clear()
+
       getUser()
       getMessages()
     }, [])
 
     async function getUser(){
       var userName = await AsyncStorage.getItem('@user')
+      var userAvatar = await AsyncStorage.getItem('@user_avatar')
       var userId = await AsyncStorage.getItem('@user_id')
 
       // if (!userName == null || !userName == ''){
         await setUser(userName)
+        await setUserAvatar(userAvatar)
         await setUserId(userId)
       // }
     }
@@ -101,18 +108,14 @@ export default function Login({ navigation }) {
         <View style={styles.titleContainer}>
           
           <View style={{paddingTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-            <Text style={styles.title}>dicuta ou</Text>
-            <View style={{alignItems: 'flex-end', paddingHorizontal: 20}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignContent: 'center'}}>
+              <UserAvatar uri={userAvatar} />
               <Text style={styles.wellcome}>Olá, @{user}</Text>
             </View>
-          </View>
-          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 7}}>
-            <Text style={styles.subtitle}>comente sobre um assunto</Text>
-            <TouchableOpacity style={{position: 'absolute', right: 5}}>
-                {/* <Image source={comentarios} style={{width: 25, height: 25, marginRight: 20}}/> */}
+            <TouchableOpacity style={{ right: 0}}>
+                <Image source={comentarios} style={{width: 25, height: 25, marginRight: 20}}/>
             </TouchableOpacity>
           </View>
-          
         </View>
 
         <View style={{ marginTop: 10, marginHorizontal: 20, paddingBottom: '28%'}}>
