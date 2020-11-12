@@ -59,6 +59,7 @@ export default function Login({ navigation }) {
   renderGridAvatar = () => {
     return listAvatarUrl.map(item => (
       <UserAvatar uri={item}
+        key={item}
         selected={item === avatar }
         style={{
           width: 54,

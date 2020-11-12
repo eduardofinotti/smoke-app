@@ -11,6 +11,7 @@ import Questions from '../../components/Question'
 const pen = require('../../assets/caneta.png')
 const comentarios = require('../../assets/comentarios.png')
 const next = require('../../assets/next.png')
+const logo = require('../../assets/logo.png')
 
 import styles from './styles'
 import UserAvatar from '../../components/UserAvatar';
@@ -108,10 +109,13 @@ export default function Login({ navigation }) {
         <View style={styles.titleContainer}>
           
           <View style={{paddingTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignContent: 'center'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <UserAvatar uri={userAvatar} />
               <Text style={styles.wellcome}>Olá, @{user}</Text>
             </View>
+
+            <Image source={logo} style={{width: 45, height: 40, marginRight: 80}}/>
+              
             <TouchableOpacity style={{ right: 0}}>
                 <Image source={comentarios} style={{width: 25, height: 25, marginRight: 20}}/>
             </TouchableOpacity>
@@ -161,7 +165,7 @@ export default function Login({ navigation }) {
 
               <View style={styles.readyContainer} >
                 <TouchableOpacity onPress={saveMessage}>
-                  <Image source={next}></Image>
+                  <Image source={next} />
                 </TouchableOpacity>
               </View>
               

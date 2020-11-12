@@ -33,7 +33,7 @@ export default StyleSheet.create({
 
     addDiscus: {
         backgroundColor: '#0f4c75',
-        width: 50,
+        width: '100%',
         height: 50,
         borderRadius: 25,
         justifyContent: 'center',

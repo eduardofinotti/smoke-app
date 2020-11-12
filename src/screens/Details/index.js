@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import UserAvatar from '../../components/UserAvatar'
 import { SafeAreaView, Text, View, TouchableOpacity, Image, StyleSheet, FlatList, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+// import WhatsAppTextInput from 'react-native-whatsapp-textinput'
+import WhatsAppTextInput from '../../components/WhatsAppTextInput'
 
 import axios from 'axios'
 
@@ -9,6 +11,8 @@ const pen = require('../../assets/caneta.png')
 const comentLogo = require('../../assets/comentarios.png')
 const next = require('../../assets/next.png')
 const back = require('../../assets/back.png')
+const enviar = require('../../assets/enviar.png')
+const logo = require('../../assets/logo.png')
 
 const Details = ({ route, navigation }) => {
 
@@ -17,21 +21,22 @@ const Details = ({ route, navigation }) => {
   console.log(item.id)
 
   const [comentarios, setComentarios] = useState('')
+  const [comentario, setComentario] = useState('')
   const [fetching, setFetching] = useState(false)
   
   const [userAvatar, setUserAvatar] = useState('https://cdn.pixabay.com/photo/2013/07/12/16/34/vampire-151178_960_720.png')
+  const [userId, setUserId] = useState(0)
 
   useEffect(()=>{
     async function getComents() {
 
       var userAvatar = await AsyncStorage.getItem('@user_avatar')
+      var userId = await AsyncStorage.getItem('@user_id')
       await setUserAvatar(userAvatar)
-
-      console.log('avatar: ', userAvatar)
+      await setUserId(userId)
 
       await axios.get(`http://162.241.90.38:7003/v1/mensagem/${item.id}/comentario`)
       .then(async function (response) {
-        // console.log(response.data)
         await setComentarios(response.data)
       })
       .catch(function (error) {
@@ -41,12 +46,45 @@ const Details = ({ route, navigation }) => {
     getComents()
   }, [])
 
+  async function sendComentario() {
+
+
+    console.log
+
+    await axios.post('http://162.241.90.38:7003/v1/comentario', 
+    {
+      "texto": comentario,
+      "usuarioId": userId,
+      "mensagemId": item.id
+    }
+  )
+  .then(async function (response) {
+
+    let list = [
+      response.data,
+      ...comentarios
+    ]
+
+    await setComentarios(list)
+    await setComentario('')
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+  }
     return (
       <SafeAreaView style={styles.container}>
 
-        <TouchableOpacity style={styles.header}>
+      <View style={{flexDirection: 'row', alignItems: 'center', width: '100%'}}>
+        <TouchableOpacity style={styles.header} onPress={()=>navigation.navigate('Home')}>
           <Image source={back} />
         </TouchableOpacity>
+
+        <View style={{width: '50%', alignItems: 'flex-end', marginRight: 20}}>
+          <Image source={logo} style={{width: 45, height: 40, }}/>
+        </View>
+      </View>
+        
 
         <View style={styles.containerMessage}>
           <View style={styles.headerMessage}>
@@ -64,33 +102,55 @@ const Details = ({ route, navigation }) => {
           </View> 
           
           <View style={styles.footer, {flexDirection: 'row', alignItems: 'center',}} >
-            <Image source={comentLogo} />
+            <Image source={comentLogo} style={styles.imageComents}/>
             <Text style={styles.time}>234 comentários </Text>
           </View>
         </View>
 
-        <View>
+        <View style = {styles.lineStyle} />
+
+        {/* <View>
           <View style={styles.textAreaSendComent}>
             <UserAvatar uri={userAvatar} />
-            <TextInput style={styles.nickInput} 
+            <TextInput style={styles.comentarioInput} 
+              multiline={true}
               placeholder='Comente...'
               placeholderTextColor='#2E6B93'  
-              // onChangeText={(text => {setUser(text)})}
-              value="user"
+              onChangeText={(text => {setComentario(text)})}
+              value={comentario}
             />
+            <TouchableOpacity style={{justifyContent: 'flex-end', marginRight: 5}}
+              onPress={() => sendComentario()}>
+              <Image source={enviar} style={{width: 25, height: 25}} />
+            </TouchableOpacity>
           </View>
-        </View>
-
-        <View style={{ marginTop: 20, marginHorizontal: 20, paddingBottom: '28%'}}>
+        </View> */}
+        
+        <View style={{ marginTop: 10, marginHorizontal: 20}}>
           <FlatList 
             showsVerticalScrollIndicator={false}
             data={comentarios}
             renderItem={({item}) => <Coment item={item}/>}
             keyExtractor={item => item.id.toString()}
-            onRefresh={() => refresh()}
-            refreshing={fetching}
+            // onRefresh={() => refresh()}
+            // refreshing={fetching}
           />
         </View>
+        <WhatsAppTextInput
+          backgroundColor={'#fff'}
+          borderTopColor={'#f5f5f5'}
+          placeholderText={'Aa'}
+          placeholderTextColor='#9e9e9e'
+          messageTextColor={'#000'}
+          textInputBgColor={'#f5f5f5'}
+          editable={true}
+          multiline={true}
+          keyboardType={'default'}
+          sendButtonBgColor={'#1a75ff'}
+          sendButtonDisableColor={'#f5f5f0'}
+          sendButtonEnableColor={'#002080'}
+        />      
+        
       </SafeAreaView>
     );
 }
@@ -109,16 +169,16 @@ const styles = StyleSheet.create({
 
   container:{
     flex: 1,
-    backgroundColor: '#bbe1fa',
-    paddingLeft: 20
+    backgroundColor: '#F3F8FF',
+    paddingHorizontal: 10
   },
 
   header: {
-    marginLeft: 20
+    marginTop: 30,
   },  
 
   containerMessage: {
-    backgroundColor: '#89B4D1',
+    backgroundColor: '#F3F8FF',
     height: 160,
     borderRadius: 10,
     padding: 8,
@@ -134,14 +194,12 @@ const styles = StyleSheet.create({
   },
 
   userName: {
-    marginLeft: -50,
     fontSize: 14,
     fontWeight: 'bold',
     color: '#3282b8'
   },
 
   timeContainer: {
-    width: '55%',
     alignItems: 'flex-end',
   },
 
@@ -174,14 +232,35 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
 
+  imageComents: {
+    width: 17,
+    height: 17,
+    marginHorizontal: 7,
+  },
+
+  lineStyle:{
+    borderWidth: 0.2,
+    borderColor:'gray',
+    margin: 10,
+  },
+
   textAreaSendComent:{
     flexDirection: 'row',
     backgroundColor: '#fff',
-    marginTop: 10,
+    margin: 10,
+    marginTop: 15,
     borderRadius: 15,
-    height: 40,
-    paddingHorizontal: 8,
-    alignItems: 'center'
+    height: 80,
+    padding: 8,
+    justifyContent: 'center',
+    width: '97%',
+  },
+
+  comentarioInput:{
+    color: '#0f4c75',
+    width: '90%',
+    fontSize: 14,
+    textAlignVertical: 'top', 
   },
 
 });
