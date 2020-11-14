@@ -102,8 +102,18 @@ const Details = ({ route, navigation }) => {
             <UserAvatar uri={item.usuarioAvatar} style={{height: 50, width: 50}}/>
             <Text style={styles.userName}>{item.usuarioNick}</Text>
           </View>
-          <View style={styles.timeContainer}>
-            <Text style={styles.time}>{item.timeout}</Text>
+          //<View style={styles.timeContainer}>
+          //  <Text style={styles.time}>{item.timeout}</Text>
+        
+          <View style={styles.body}>
+            <Text style={styles.discuss}>
+              {item.texto}
+            </Text>
+          </View> 
+          
+          <View style={styles.footer, {flexDirection: 'row', alignItems: 'center',}} >
+            <Image source={comentLogo} style={styles.imageComents}/>
+            <Text style={styles.time}>{item.totalComentario} comentários </Text>
           </View>
         </View>
       

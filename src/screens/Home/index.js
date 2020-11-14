@@ -16,7 +16,7 @@ const logo = require('../../assets/logo.png')
 import styles from './styles'
 import UserAvatar from '../../components/UserAvatar';
 
-export default function Login({ navigation }) {
+export default function Home({ navigation }) {
 
     const [modalVisible, setModalVisible] = useState(false)
     const [user, setUser] = useState('')
@@ -101,6 +101,10 @@ export default function Login({ navigation }) {
       setCountChar(0)
     }
 
+    function goToMyMessages() {
+      navigation.navigate('MyMessages', {userId})
+    }
+
     return (
       <View style={styles.container}>
         <View style={styles.titleContainer}>
@@ -115,7 +119,12 @@ export default function Login({ navigation }) {
               <Image source={logo} style={{width: 45, height: 40}}/>
             </View>
             
-            <TouchableOpacity style={{ right: 0}}>
+            <Image source={logo} style={{width: 45, height: 40, marginRight: 80}}/>
+              
+            <TouchableOpacity 
+              style={{ right: 0}}
+              onPress={() => goToMyMessages()}
+            >
                 <Image source={comentarios} style={{width: 25, height: 25, marginRight: 20}}/>
             </TouchableOpacity>
           </View>
