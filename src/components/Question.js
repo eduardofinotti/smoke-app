@@ -8,14 +8,6 @@ var moment = require('moment'); // require
 
 const Question = (props) => {
 
-  var tempo = props.item.timeout.split(':')[0]
-
-  if(Number(tempo) < 13){
-    tempo = 'falta menos de 1h'
-  } else {
-    tempo = 'faltam ' + tempo + 'h'
-  }
-  
   const navigation = useNavigation();
 
   function goToDetails(item) {
@@ -31,7 +23,7 @@ const Question = (props) => {
           <Text style={styles.userName}>{props.item.usuarioNick}</Text>
         </View>
         <View style={styles.timeContainer}>
-          <Text style={styles.time}>{tempo}</Text>
+          <Text style={styles.time}>{props.item.timeout}</Text>
         </View>
       </View>
       
@@ -44,7 +36,7 @@ const Question = (props) => {
       <TouchableOpacity style={styles.footer, {flexDirection: 'row', alignItems: 'center',}} 
         onPress={()=> goToDetails(props.item)}>
         <Image source={comentarios} style={styles.imageComents}/>
-        <Text style={styles.time}>234 comentários </Text>
+        <Text style={styles.time}>{props.item.totalComentario} comentários </Text>
       </TouchableOpacity>
     </View>
   );

@@ -103,7 +103,7 @@ const Details = ({ route, navigation }) => {
           
           <View style={styles.footer, {flexDirection: 'row', alignItems: 'center',}} >
             <Image source={comentLogo} style={styles.imageComents}/>
-            <Text style={styles.time}>234 comentários </Text>
+            <Text style={styles.time}>{item.totalComentario} comentários </Text>
           </View>
         </View>
 
