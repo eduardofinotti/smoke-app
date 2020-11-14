@@ -65,7 +65,7 @@ export default function Login({ navigation }) {
 
     function refresh() {
       setFetching(true)
-      getMessages('')
+      getMessages()
       setFetching(false)
     }
 
@@ -87,7 +87,7 @@ export default function Login({ navigation }) {
         response.data,
         ...discuss
       ]
-      setDiscuss(list)
+      await setDiscuss(list)
       
       setModalVisible(false)
       setMessage('')
@@ -114,8 +114,10 @@ export default function Login({ navigation }) {
               <Text style={styles.wellcome}>Olá, @{user}</Text>
             </View>
 
-            <Image source={logo} style={{width: 45, height: 40, marginRight: 80}}/>
-              
+            <View style={{flexDirection: 'row'}}>
+              <Image source={logo} style={{width: 45, height: 40}}/>
+            </View>
+            
             <TouchableOpacity style={{ right: 0}}>
                 <Image source={comentarios} style={{width: 25, height: 25, marginRight: 20}}/>
             </TouchableOpacity>
