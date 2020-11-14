@@ -29,7 +29,6 @@ export default function Home({ navigation }) {
     const [page, setPage] = useState(0)
 
     useEffect(() => {
-
       // AsyncStorage.clear()
 
       getUser()
@@ -41,11 +40,9 @@ export default function Home({ navigation }) {
       var userAvatar = await AsyncStorage.getItem('@user_avatar')
       var userId = await AsyncStorage.getItem('@user_id')
 
-      // if (!userName == null || !userName == ''){
-        await setUser(userName)
-        await setUserAvatar(userAvatar)
-        await setUserId(userId)
-      // }
+      await setUser(userName)
+      await setUserAvatar(userAvatar)
+      await setUserId(userId)
     }
 
     function getMessages() {
@@ -65,7 +62,7 @@ export default function Home({ navigation }) {
 
     function refresh() {
       setFetching(true)
-      getMessages('')
+      getMessages()
       setFetching(false)
     }
 
@@ -87,7 +84,7 @@ export default function Home({ navigation }) {
         response.data,
         ...discuss
       ]
-      setDiscuss(list)
+      await setDiscuss(list)
       
       setModalVisible(false)
       setMessage('')
@@ -118,6 +115,10 @@ export default function Home({ navigation }) {
               <Text style={styles.wellcome}>Olá, @{user}</Text>
             </View>
 
+            <View style={{flexDirection: 'row'}}>
+              <Image source={logo} style={{width: 45, height: 40}}/>
+            </View>
+            
             <Image source={logo} style={{width: 45, height: 40, marginRight: 80}}/>
               
             <TouchableOpacity 

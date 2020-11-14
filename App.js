@@ -8,6 +8,7 @@ import Login from './src/screens/Login'
 import Home from './src/screens/Home'
 import Onboarding from './src/screens/Onboarding'
 import Details from './src/screens/Details'
+import { StatusBar } from 'react-native';
 import MyMessages from './src/screens/Messages/mymessages'
 
 const Stack = createStackNavigator()
@@ -34,7 +35,7 @@ export default function App() {
   return (
     
     <NavigationContainer>
-
+      <StatusBar barStyle='dark-content'/>
       {firstAccess &&
       <Stack.Navigator>
         <Stack.Screen name="Onboarding" component={Onboarding} 

@@ -4,7 +4,7 @@ import { Avatar, Icon } from "react-native-elements";
 
 const UserAvatar = props => {
   let styleAvatar = styles.avatar
-  
+
   if(props.style) {
     styleAvatar = props.style
   }  
@@ -16,12 +16,12 @@ const UserAvatar = props => {
 
   return (
 
-    <View style={[black? styles.black: '', styles.avatarContainer]}>
+    <View style={[black? styles.black : '', styles.avatarContainer]}>
       <Avatar
         style={styleAvatar}
         rounded
         source={{
-          uri: props.uri
+          uri: props.uri? props.uri : 'https://cdn.pixabay.com/photo/2013/07/12/16/34/vampire-151178_960_720.png'
         }}
         onPress={() => {
           if(props.onPress) props.onPress()

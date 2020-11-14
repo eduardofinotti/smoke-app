@@ -88,6 +88,42 @@ export default StyleSheet.create({
         flex: 1,
         alignItems: 'flex-end',
         paddingTop: 20,
+    },
+
+    textInputParentView: {
+        flexDirection: 'row',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+    },
+    textInputView: {
+        flex: 1,
+        marginRight: 15,
+        justifyContent: 'center',
+    },
+    textInputStyle: {
+        fontSize: 14,
+        overflow: 'hidden',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        paddingLeft: 20,
+        paddingTop: 8,
+        textAlign: 'left',
+        borderRadius: 20,
+    },
+    sendButtonStyle: {
+        paddingVertical: 15,
+        paddingLeft: 20,
+        paddingRight: 15,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 40,
+        height: 40
+    },
+    placeholderStyle:{
+        fontSize: 12,
+        textAlignVertical: 'center'
     }
 
 
