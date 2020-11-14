@@ -16,7 +16,7 @@ const UserAvatar = props => {
 
   return (
 
-    <View style={[black? styles.black: '', styles.avatarContainer]}>
+    <View style={[black? styles.black : '', styles.avatarContainer]}>
       <Avatar
         style={styleAvatar}
         rounded

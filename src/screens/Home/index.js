@@ -29,7 +29,6 @@ export default function Login({ navigation }) {
     const [page, setPage] = useState(0)
 
     useEffect(() => {
-
       // AsyncStorage.clear()
 
       getUser()
@@ -41,11 +40,9 @@ export default function Login({ navigation }) {
       var userAvatar = await AsyncStorage.getItem('@user_avatar')
       var userId = await AsyncStorage.getItem('@user_id')
 
-      // if (!userName == null || !userName == ''){
-        await setUser(userName)
-        await setUserAvatar(userAvatar)
-        await setUserId(userId)
-      // }
+      await setUser(userName)
+      await setUserAvatar(userAvatar)
+      await setUserId(userId)
     }
 
     function getMessages() {
