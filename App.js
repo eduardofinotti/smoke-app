@@ -8,6 +8,7 @@ import Login from './src/screens/Login'
 import Home from './src/screens/Home'
 import Onboarding from './src/screens/Onboarding'
 import Details from './src/screens/Details'
+import MyMessages from './src/screens/Messages/mymessages'
 
 const Stack = createStackNavigator()
 
@@ -54,7 +55,13 @@ export default function App() {
             animationEnabled: false
           }}
         />
-         <Stack.Screen name="Details" component={Details} 
+        <Stack.Screen name="Details" component={Details} 
+          options={{
+            headerShown: false,
+            animationEnabled: true
+          }}
+        />
+        <Stack.Screen name="MyMessages" component={MyMessages} 
           options={{
             headerShown: false,
             animationEnabled: true
@@ -71,16 +78,20 @@ export default function App() {
             headerShown: false,
           }}
         />
-         <Stack.Screen name="Details" component={Details} 
+        <Stack.Screen name="Details" component={Details} 
           options={{
             headerShown: false,
             animationEnabled: true
           }}
         />
-      </Stack.Navigator>
-      
-      }
-      
+        <Stack.Screen name="MyMessages" component={MyMessages} 
+          options={{
+            headerShown: false,
+            animationEnabled: true
+          }}
+        />
+      </Stack.Navigator>   
+      }      
     </NavigationContainer>
   );
 }

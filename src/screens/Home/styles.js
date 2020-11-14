@@ -15,7 +15,8 @@ export default StyleSheet.create({
     wellcome:{
         color: '#3282b8',
         fontWeight: 'bold',
-        fontSize: 14
+        fontSize: 14,
+        marginLeft: 5
     },
 
     title:{
