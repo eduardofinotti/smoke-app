@@ -1,8 +1,8 @@
- import React, { useState } from 'react';
+ import React, { useContext, useState } from 'react';
 import { SafeAreaView, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import UserAvatar from '../../components/UserAvatar'
 import axios from 'axios'
+import UsuarioContext from '../../contexts/usuario'
 
 const ok = require('../../assets/ok.png')
 
@@ -12,7 +12,8 @@ export default function Login({ navigation }) {
 
   const [ user, setUser ] = useState('')
   const [ avatar, setAvatar ] = useState('https://cdn.pixabay.com/photo/2016/03/31/20/27/avatar-1295773_960_720.png')
-  
+  const { signIn } = useContext(UsuarioContext)
+
   const listAvatarUrl = [
     'https://cdn.pixabay.com/photo/2016/03/31/20/27/avatar-1295773_960_720.png',
     'https://cdn.pixabay.com/photo/2016/09/01/08/24/smiley-1635449_960_720.png',
@@ -41,13 +42,7 @@ export default function Login({ navigation }) {
       }
     )
     .then(async function (response) {
-
-      console.log(response.data.nick + ' - ' + response.data.id)
-
-      await AsyncStorage.setItem('@user', response.data.nick)
-      await AsyncStorage.setItem('@user_avatar', avatar)
-      await AsyncStorage.setItem('@user_id', String(response.data.id))
-
+      signIn(response.data) // chama o método de login do UsuarioContext
       navigation.navigate('Home')
     })
     .catch(function (error) {

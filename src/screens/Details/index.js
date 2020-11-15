@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import UserAvatar from '../../components/UserAvatar'
 import { SafeAreaView, Text, View, TouchableOpacity, Image, 
     StyleSheet, FlatList, TextInput, Keyboard } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import DeviceInfo from "react-native-device-info";
+import { CommonActions } from '@react-navigation/native';
 import axios from 'axios'
+import UsuarioContext from '../../contexts/usuario';
 
 const pen = require('../../assets/caneta.png')
 const comentLogo = require('../../assets/comentarios.png')
@@ -24,16 +24,16 @@ const Details = ({ route, navigation }) => {
   const [userAvatar, setUserAvatar] = useState('https://cdn.pixabay.com/photo/2013/07/12/16/34/vampire-151178_960_720.png')
   const [userId, setUserId] = useState(0)
 
+  const { usuarioLogado } = useContext(UsuarioContext);
+  
   useEffect(()=>{
     getComents()
   }, [])
 
   async function getComents() {
-
-    var userAvatar = await AsyncStorage.getItem('@user_avatar')
-    var userId = await AsyncStorage.getItem('@user_id')
-    await setUserAvatar(userAvatar)
-    await setUserId(userId)
+    // tem q eliminar essas variaveis e usar soh os dados da usuarioLogado
+    await setUserAvatar(usuarioLogado.avatarUrl)
+    await setUserId(usuarioLogado.id)
 
     await axios.get(`http://162.241.90.38:7003/v1/mensagem/${item.id}/comentario`)
     .then(async function (response) {
@@ -85,7 +85,7 @@ const Details = ({ route, navigation }) => {
 
       <View style={{ paddingTop: 30, flexDirection: 'row', alignItems: 'center', 
         alignContent: 'center', justifyContent: 'space-between', marginHorizontal: 10}}>
-        <TouchableOpacity style={styles.header} onPress={()=>navigation.navigate('Home')}>
+        <TouchableOpacity style={styles.header} onPress={()=>navigation.dispatch(CommonActions.goBack())}>
           <Image source={back} />
         </TouchableOpacity>
 
@@ -97,23 +97,9 @@ const Details = ({ route, navigation }) => {
       <View style={styles.containerMessage}>
         
         <View style={styles.headerMessage}>
-
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <UserAvatar uri={item.usuarioAvatar} style={{height: 50, width: 50}}/>
             <Text style={styles.userName}>{item.usuarioNick}</Text>
-          </View>
-          //<View style={styles.timeContainer}>
-          //  <Text style={styles.time}>{item.timeout}</Text>
-        
-          <View style={styles.body}>
-            <Text style={styles.discuss}>
-              {item.texto}
-            </Text>
-          </View> 
-          
-          <View style={styles.footer, {flexDirection: 'row', alignItems: 'center',}} >
-            <Image source={comentLogo} style={styles.imageComents}/>
-            <Text style={styles.time}>{item.totalComentario} comentários </Text>
           </View>
         </View>
       
@@ -125,7 +111,7 @@ const Details = ({ route, navigation }) => {
         
         <View style={styles.footer, {flexDirection: 'row', alignItems: 'center',}} >
           <Image source={comentLogo} style={styles.imageComents}/>
-          <Text style={styles.time}>234 comentários </Text>
+          <Text style={styles.time}>{item.totalComentario} comentários </Text>
         </View>
       </View>
 
