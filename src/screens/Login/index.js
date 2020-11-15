@@ -1,4 +1,4 @@
- import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import UserAvatar from '../../components/UserAvatar'
@@ -75,7 +75,7 @@ export default function Login({ navigation }) {
   }
 
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <View style={styles.nickContainer}>
           <Text style={styles.nickTitle}>escolha um apelido</Text>
         </View>
@@ -102,6 +102,6 @@ export default function Login({ navigation }) {
             <Image source={ok}></Image>
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </View>
     );
 }

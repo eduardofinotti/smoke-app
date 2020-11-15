@@ -33,66 +33,64 @@ export default function App() {
   }, [])
 
   return (
-    
-    <NavigationContainer>
-      <StatusBar barStyle='dark-content'/>
-      {firstAccess &&
-      <Stack.Navigator>
-        <Stack.Screen name="Onboarding" component={Onboarding} 
-          options={{
-            headerShown: false,
-            animationEnabled: true
-          }}
-        />
-        <Stack.Screen name="Home" component={Home} 
-          options={{
-            headerShown: false,
-            animationEnabled: false
-          }}
-        />
-       <Stack.Screen name="Login" component={Login} 
-          options={{
-            headerShown: false,
-            animationEnabled: false
-          }}
-        />
-        <Stack.Screen name="Details" component={Details} 
-          options={{
-            headerShown: false,
-            animationEnabled: true
-          }}
-        />
-        <Stack.Screen name="MyMessages" component={MyMessages} 
-          options={{
-            headerShown: false,
-            animationEnabled: true
-          }}
-        />
-      </Stack.Navigator>
-      
-      }
+      <NavigationContainer>
+        <StatusBar backgroundColor='#F3F8FF' barStyle='dark-content'/>
+        {firstAccess &&
+        <Stack.Navigator>
+          <Stack.Screen name="Onboarding" component={Onboarding} 
+            options={{
+              headerShown: false,
+              animationEnabled: true
+            }}
+          />
+          <Stack.Screen name="Home" component={Home} 
+            options={{
+              headerShown: false,
+              animationEnabled: false
+            }}
+          />
+        <Stack.Screen name="Login" component={Login} 
+            options={{
+              headerShown: false,
+              animationEnabled: false
+            }}
+          />
+          <Stack.Screen name="Details" component={Details} 
+            options={{
+              headerShown: false,
+              animationEnabled: true
+            }}
+          />
+          <Stack.Screen name="MyMessages" component={MyMessages} 
+            options={{
+              headerShown: false,
+              animationEnabled: true
+            }}
+          />
+        </Stack.Navigator>
+        }
 
-      {!firstAccess &&
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} 
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen name="Details" component={Details} 
-          options={{
-            headerShown: false,
-            animationEnabled: true
-          }}
-        />
-        <Stack.Screen name="MyMessages" component={MyMessages} 
-          options={{
-            headerShown: false,
-            animationEnabled: true
-          }}
-        />
-      </Stack.Navigator>   
-      }      
-    </NavigationContainer>
+        {!firstAccess &&
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={Home} 
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen name="Details" component={Details} 
+            options={{
+              headerShown: false,
+              animationEnabled: true
+            }}
+          />
+          <Stack.Screen name="MyMessages" component={MyMessages} 
+            options={{
+              headerShown: false,
+              animationEnabled: true
+            }}
+          />
+        </Stack.Navigator>   
+        }      
+      </NavigationContainer>
   );
 }

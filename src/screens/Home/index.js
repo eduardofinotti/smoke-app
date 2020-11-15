@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { SafeAreaView, Text, View, TouchableOpacity, Image, FlatList, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 
@@ -106,7 +106,7 @@ export default function Home({ navigation }) {
     }
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.titleContainer}>
           
           <View style={{paddingTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -115,16 +115,10 @@ export default function Home({ navigation }) {
               <Text style={styles.wellcome}>Olá, @{user}</Text>
             </View>
 
-            <View style={{flexDirection: 'row'}}>
-              <Image source={logo} style={{width: 45, height: 40}}/>
-            </View>
-            
-            <Image source={logo} style={{width: 45, height: 40, marginRight: 80}}/>
+            <Image source={logo} style={{width: 45, height: 40}}/>
               
-            <TouchableOpacity 
-              style={{ right: 0}}
-              onPress={() => goToMyMessages()}
-            >
+            <TouchableOpacity style={{ right: 0}}
+              onPress={() => goToMyMessages()}>
                 <Image source={comentarios} style={{width: 25, height: 25, marginRight: 20}}/>
             </TouchableOpacity>
           </View>
@@ -134,7 +128,7 @@ export default function Home({ navigation }) {
           <FlatList 
             showsVerticalScrollIndicator={false}
             data={discuss}
-            renderItem={({item}) => <Questions item={item}/>}
+            renderItem={({item}) => <Questions user={user} avatar={userAvatar} item={item}/>}
             keyExtractor={item => item.id.toString()}
             onRefresh={() => refresh()}
             refreshing={fetching}
@@ -181,6 +175,6 @@ export default function Home({ navigation }) {
           </View>
         </Modal>
 
-      </View>
+      </SafeAreaView>
     );
 }
