@@ -8,7 +8,7 @@ export default StyleSheet.create({
     },
 
     titleContainer:{
-        marginTop: 25,
+        marginTop: 5,
         marginLeft: 20
     },
 

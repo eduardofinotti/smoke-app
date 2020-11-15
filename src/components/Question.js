@@ -12,7 +12,7 @@ const Question = (props) => {
 
   function goToDetails(item) {
     console.log('item: ', item)
-    navigation.navigate('Details', {item})
+    navigation.navigate('Details', {item, avatar: props.avatar, user: props.user})
   }
 
   return (
