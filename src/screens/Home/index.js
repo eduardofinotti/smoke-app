@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { SafeAreaView, Text, View, TouchableOpacity, Image, FlatList, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
-
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import axios from 'axios'
 
@@ -15,35 +13,21 @@ const logo = require('../../assets/logo.png')
 
 import styles from './styles'
 import UserAvatar from '../../components/UserAvatar';
+import UsuarioContext from '../../contexts/usuario';
 
 export default function Home({ navigation }) {
 
     const [modalVisible, setModalVisible] = useState(false)
-    const [user, setUser] = useState('')
-    const [userId, setUserId] = useState('')
-    const [userAvatar, setUserAvatar] = useState('')
     const [fetching, setFetching] = useState(false)
     const [discuss, setDiscuss] = useState()
     const [message, setMessage] = useState()
     const [countChar, setCountChar] = useState(0)
     const [page, setPage] = useState(0)
+    const { usuarioLogado } = useContext(UsuarioContext);
 
     useEffect(() => {
-      // AsyncStorage.clear()
-
-      getUser()
       getMessages()
     }, [])
-
-    async function getUser(){
-      var userName = await AsyncStorage.getItem('@user')
-      var userAvatar = await AsyncStorage.getItem('@user_avatar')
-      var userId = await AsyncStorage.getItem('@user_id')
-
-      await setUser(userName)
-      await setUserAvatar(userAvatar)
-      await setUserId(userId)
-    }
 
     function getMessages() {
       axios.post('http://162.241.90.38:7003/v1/mensagem/pagination', 
@@ -75,7 +59,7 @@ export default function Home({ navigation }) {
       axios.post('http://162.241.90.38:7003/v1/mensagem', 
       {
         "texto": message,
-        "usuarioId": userId
+        "usuarioId": usuarioLogado.id
       }
     )
     .then(async function (response) {
@@ -102,7 +86,7 @@ export default function Home({ navigation }) {
     }
 
     function goToMyMessages() {
-      navigation.navigate('MyMessages', {userId})
+      navigation.navigate('MyMessages', {userId: usuarioLogado.id})
     }
 
     return (
@@ -111,8 +95,8 @@ export default function Home({ navigation }) {
           
           <View style={{paddingTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <UserAvatar uri={userAvatar} />
-              <Text style={styles.wellcome}>Olá, @{user}</Text>
+              <UserAvatar uri={usuarioLogado.avatarUrl} />
+              <Text style={styles.wellcome}>Olá, @{usuarioLogado.nick}</Text>
             </View>
 
             <Image source={logo} style={{width: 45, height: 40, marginRight: 80}}/>

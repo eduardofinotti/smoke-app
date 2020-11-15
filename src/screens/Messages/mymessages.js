@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, Image, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
 import axios from 'axios'
 import Questions from '../../components/Question'
 const logo = require('../../assets/logo.png')
 import styles from './styles'
+import UsuarioContext from '../../contexts/usuario';
 
 export default function MyMessages({ route, navigation }) {
 
-    const { userId } = route.params;
-    console.log('UserId: ' + userId)
+    const { usuarioLogado } = useContext(UsuarioContext);
 
     const [messages, setMessages] = useState()
     const back = require('../../assets/back.png')
@@ -18,7 +18,7 @@ export default function MyMessages({ route, navigation }) {
     }, [])
 
     function loadMyMessages() {
-      axios.get(`http://162.241.90.38:7003/v1/usuario/${userId}/mensagem`)
+      axios.get(`http://162.241.90.38:7003/v1/usuario/${usuarioLogado.id}/mensagem`)
       .then(function (response) {
         setMessages(response.data)
       })
