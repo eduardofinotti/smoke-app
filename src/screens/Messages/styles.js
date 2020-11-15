@@ -5,7 +5,6 @@ export default StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: '#F3F8FF',
-        paddingHorizontal: 10
     },
 
     header: {
@@ -16,6 +15,6 @@ export default StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: '#0f4c75',
-        marginTop: 10
+        marginLeft: 10
     }
 })

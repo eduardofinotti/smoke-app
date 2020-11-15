@@ -4,6 +4,7 @@ import { SafeAreaView, Text, View, TouchableOpacity, Image, StyleSheet, FlatList
 import AsyncStorage from '@react-native-async-storage/async-storage'
 // import WhatsAppTextInput from 'react-native-whatsapp-textinput'
 import WhatsAppTextInput from '../../components/WhatsAppTextInput'
+import { CommonActions } from '@react-navigation/native';
 
 import axios from 'axios'
 
@@ -76,7 +77,7 @@ const Details = ({ route, navigation }) => {
       <SafeAreaView style={styles.container}>
 
       <View style={{flexDirection: 'row', alignItems: 'center', width: '100%'}}>
-        <TouchableOpacity style={styles.header} onPress={()=>navigation.navigate('Home')}>
+        <TouchableOpacity style={styles.header} onPress={()=>navigation.dispatch(CommonActions.goBack())}>
           <Image source={back} />
         </TouchableOpacity>
 

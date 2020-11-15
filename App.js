@@ -16,20 +16,17 @@ export default function App() {
 
   const [firstAccess, setFirstAccess] = useState(false)
 
-  useEffect(()=>{
+  async function getAccess() {
 
-    async function getAccess() {
+    var user = await AsyncStorage.getItem('@user')
 
-      var user = await AsyncStorage.getItem('@user')
-
-      if(user === null || user === '') {
-        console.log('User: ' + user)
-        setFirstAccess(true)
-      }
+    if(user === null || user === '') {
+      console.log('Primeiro Acesso')
+      setFirstAccess(true)
     }
+  }
 
-    getAccess()
-  }, [])
+  getAccess()
 
   return (
     

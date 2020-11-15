@@ -29,18 +29,16 @@ export default function MyMessages({ route, navigation }) {
 
     return (
       <SafeAreaView style={styles.container}>
-        <View style={{flexDirection: 'row', alignItems: 'center', width: '100%'}}>
-          <TouchableOpacity style={styles.header} onPress={()=>navigation.navigate('Home')}>
+        <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableOpacity style={{marginLeft: 10 }} onPress={()=>navigation.navigate('Home')}>
             <Image source={back} />
           </TouchableOpacity>
-
-          <View style={{width: '50%', alignItems: 'flex-end', marginRight: 20}}>
+          
+          <Text style={styles.title}>Minhas Mensagens</Text>
+          
+          <View style={{ marginRight: 10,  alignItems: 'flex-end'}}>
             <Image source={logo} style={{width: 45, height: 40, }}/>
           </View>
-        </View>
-
-        <View>
-          <Text style={styles.title}>Minhas Mensagens</Text>
         </View>
 
         <View style={{ marginTop: 10, marginHorizontal: 20, paddingBottom: '28%'}}>
