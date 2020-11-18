@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserAvatar from '../../components/UserAvatar'
 import { SafeAreaView, Text, View, TouchableOpacity, Image, 
-    StyleSheet, FlatList, TextInput, Keyboard } from 'react-native';
+    StyleSheet, FlatList, TextInput } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import axios from 'axios'
 import UsuarioContext from '../../contexts/usuario';
+import { Header, Left, Body, Right } from "native-base";
+
+import { useKeyboard } from '@react-native-community/hooks'
+
 
 const pen = require('../../assets/caneta.png')
 const comentLogo = require('../../assets/comentarios.png')
@@ -15,7 +19,12 @@ const logo = require('../../assets/logo.png')
 
 const Details = ({ route, navigation }) => {
 
-  const { item, avatar, user } = route.params;
+  const keyboard = useKeyboard()
+
+  console.log('keyboard isKeyboardShow: ', keyboard.keyboardShown)
+  console.log('keyboard keyboardHeight: ', keyboard.keyboardHeight)
+
+  const { item, user } = route.params;
 
   const [comentario, setComentario] = useState('')
   const [height, setHeight] = useState(0)
@@ -25,10 +34,11 @@ const Details = ({ route, navigation }) => {
   const [userId, setUserId] = useState(0)
 
   const { usuarioLogado } = useContext(UsuarioContext);
-  
+
   useEffect(()=>{
     getComents()
   }, [])
+
 
   async function getComents() {
     // tem q eliminar essas variaveis e usar soh os dados da usuarioLogado
@@ -85,23 +95,20 @@ const Details = ({ route, navigation }) => {
     return (
       <View style={styles.container}>
 
-      <View style={{ paddingTop: 30, flexDirection: 'row', alignItems: 'center', 
-        alignContent: 'center', justifyContent: 'space-between', marginHorizontal: 10}}>
-        <TouchableOpacity style={styles.header} onPress={()=>navigation.dispatch(CommonActions.goBack())}>
-          <Image source={back} />
-        </TouchableOpacity>
-
-        <View style={{ paddingTop: 30, flexDirection: 'row', alignItems: 'center', 
-          alignContent: 'center', justifyContent: 'space-between', marginHorizontal: 10}}>
-          <TouchableOpacity style={styles.header} onPress={()=>navigation.navigate('Home')}>
-            <Image source={back} />
-          </TouchableOpacity>
-        </View>
+        <Header transparent>
+          <Left>
+            <TouchableOpacity style={styles.header} onPress={()=>navigation.dispatch(CommonActions.goBack())}>
+              <Image source={back} style={{height: 22, width: 22}}/>
+            </TouchableOpacity>
+          </Left>
+          <Body style={{marginLeft: Platform.OS == 'android'? '35%':0}}>
+            <Image source={logo} style={{width: 45, height: 40}}/>
+          </Body>
+          <Right></Right>
+        </Header>
 
         <View style={styles.containerMessage}>
-          
           <View style={styles.headerMessage}>
-
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <UserAvatar uri={item.usuarioAvatar} style={{height: 50, width: 50}}/>
               <Text style={styles.userName}>{item.usuarioNick}</Text>
@@ -119,46 +126,43 @@ const Details = ({ route, navigation }) => {
             <Image source={comentLogo} style={styles.imageComents}/>
             <Text style={styles.time}>{item.totalComentario} comentários </Text>
           </View>
-      </View>
+        </View>
 
-      <View style = {styles.lineStyle} />
+        <View style = {styles.lineStyle} />
 
-      <View style={{ marginTop: 0, marginHorizontal: 20, height: '57%'}}>
-        <FlatList 
-          showsVerticalScrollIndicator={false}
-          data={comentarios}
-          renderItem={({item}) => <Coment user={user} height={height} item={item}/>}
-          keyExtractor={item => item.id.toString()}
-          onRefresh={() => refresh()}
-          refreshing={fetching}
-        />
-      </View>
-        
-      <View style={{ position: 'absolute', width: '105%', bottom: 0 }}>
+        <View style={{ marginTop: 0, marginHorizontal: 20, height: '57%'}}>
+          <FlatList 
+            showsVerticalScrollIndicator={false}
+            data={comentarios}
+            renderItem={({item}) => <Coment user={usuarioLogado.nick} height={height} item={item}/>}
+            keyExtractor={item => item.id.toString()}
+            onRefresh={() => refresh()}
+            refreshing={fetching}
+          />
+        </View>
+
+        <View style={{ position: 'absolute', width: '105%', bottom: Platform.OS == 'ios' ? keyboard.keyboardHeight : 0 }}>
           <View style={[styles.textInputParentView, {
               borderTopColor: '#f5f5f5',
               backgroundColor: '#fff'}]}>
 
-              <UserAvatar uri={avatar}/>
-
+              <UserAvatar uri={usuarioLogado.avatarUrl}/>
+             
               <View style={styles.textInputView}>
                   <TextInput
-                      editable={true}
-                      multiline={true}
-                      placeholder='Aa'
-                      placeholderTextColor='#9e9e9e'
-                      placeholderStyle={[styles.placeholderStyle,{color: '#9e9e9e'}]}
-                      underlineColorAndroid='transparent'
-                      keyboardType='default'
-                      value={comentario}
-                      onChangeText={(editedText) => {setComentario(editedText)}}
-                      onContentSizeChange={(event) =>setHeight(event.nativeEvent.contentSize.height)}
-                      style={[styles.textInputStyle,{
-                          backgroundColor: '#f5f5f5',
-                          color: 'black'
-                      }]}
-                  />
+                    editable={true}
+                    multiline={true}
+                    placeholder='Aa'
+                    placeholderTextColor='#9e9e9e'
+                    placeholderStyle={[styles.placeholderStyle,{color: '#9e9e9e'}]}
+                    underlineColorAndroid='transparent'
+                    keyboardType='default'
+                    value={comentario}
+                    onChangeText={(editedText) => {setComentario(editedText)}}
+                    onContentSizeChange={(event) =>setHeight(event.nativeEvent.contentSize.height)}
+                    style={[styles.textInputStyle,{ backgroundColor: '#f5f5f5', color: 'black' }]}/>
               </View>
+
               <TouchableOpacity
                   disabled={validateTextInput(comentario)}
                   onPress={sendComentario}>
@@ -170,7 +174,7 @@ const Details = ({ route, navigation }) => {
               </TouchableOpacity>
           </View>
       </View>
-
+      
       </View>
     );
 }
@@ -220,7 +224,8 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#3282b8'
+    color: '#3282b8',
+    marginHorizontal: 8
   },
 
   timeContainer: {
@@ -263,7 +268,7 @@ const styles = StyleSheet.create({
   },
 
   lineStyle:{
-    borderWidth: 0.2,
+    borderWidth: 0.4,
     borderColor:'gray',
     margin: 10,
   },
@@ -297,18 +302,19 @@ textInputView: {
     flex: 1,
     marginRight: 15,
     marginLeft: 8,
-    justifyContent: 'center',
 },
 textInputStyle: {
     fontSize: 14,
     overflow: 'hidden',
     justifyContent: 'center',
+    alignContent: 'center',
     alignItems: 'center',
     flexWrap: 'wrap',
     paddingLeft: 20,
     paddingTop: 8,
     textAlign: 'left',
     borderRadius: 20,
+    height: Platform.OS == 'ios'? 35 : 40
 },
 sendButtonStyle: {
     paddingVertical: 15,
