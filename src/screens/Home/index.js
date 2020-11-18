@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { SafeAreaView, Text, View, TouchableOpacity, Image, FlatList, TextInput } from 'react-native';
+import { SafeAreaView, Text, View, TouchableOpacity, Image, FlatList, TextInput, Platform } from 'react-native';
 import Modal from 'react-native-modal';
 
 import axios from 'axios'
@@ -14,6 +14,7 @@ const logo = require('../../assets/logo.png')
 import styles from './styles'
 import UserAvatar from '../../components/UserAvatar';
 import UsuarioContext from '../../contexts/usuario';
+import { Header, Right, Left, Body } from "native-base";
 
 export default function Home({ navigation }) {
 
@@ -26,14 +27,16 @@ export default function Home({ navigation }) {
     const { usuarioLogado } = useContext(UsuarioContext);
 
     useEffect(() => {
-      getMessages()
+      getMessages(0)
     }, [])
 
     function getMessages() {
+      setPage(0)
+
       axios.post('http://162.241.90.38:7003/v1/mensagem/pagination', 
         {
-          "pageNo": page,
-          "pageSize": 50
+          "pageNo": 0,
+          "pageSize": 5
         }
       )
       .then(async function (response) {
@@ -44,9 +47,43 @@ export default function Home({ navigation }) {
       });
     }
 
-    function refresh() {
+    function getMessagesInfinity() {
+
+      console.log(page)
+      axios.post('http://162.241.90.38:7003/v1/mensagem/pagination', 
+        {
+          "pageNo": page,
+          "pageSize": 5
+        }
+      )
+      .then(async function (response) {
+        if(response.data.numberOfElements > 0){
+
+          let list = [ 
+            ...discuss,
+            response.data.content
+          ]
+
+          await setDiscuss(list)
+          setPage(page+1)
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
+
+    async function refresh() {
+      console.log('refresh...')
       setFetching(true)
-      getMessages()
+      await getMessages()
+      setFetching(false)
+    }
+
+    async function infinitScroll() {
+      console.log('infinit...')
+      setFetching(true)
+      await getMessagesInfinity()
       setFetching(false)
     }
 
@@ -90,32 +127,38 @@ export default function Home({ navigation }) {
     }
 
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.titleContainer}>
-          
-          <View style={{paddingTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={styles.container}>
+
+        <Header transparent>
+          <Left>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 10, width: 500}}>
               <UserAvatar uri={usuarioLogado.avatarUrl} />
               <Text style={styles.wellcome}>Olá, @{usuarioLogado.nick}</Text>
             </View>
+          </Left>
 
+          <Body style={{justifyContent: 'flex-end', alignSelf: 'center', marginLeft: Platform.OS == 'android'? '35%': 0}}>
             <Image source={logo} style={{width: 45, height: 40}}/>
-              
-            <TouchableOpacity style={{ right: 0}}
+          </Body>
+          
+          <Right>
+            <TouchableOpacity
               onPress={() => goToMyMessages()}>
-                <Image source={comentarios} style={{width: 25, height: 25, marginRight: 20}}/>
+                <Image source={comentarios} style={{width: 25, height: 25, marginRight: 10}}/>
             </TouchableOpacity>
-          </View>
-        </View>
+          </Right>
+        </Header>
 
-        <View style={{ marginTop: 10, marginHorizontal: 20, paddingBottom: '28%'}}>
-          <FlatList 
+        <View style={{ flex: 1,marginTop: 10, marginHorizontal: 20, marginBottom: 20}}>
+          <FlatList
             showsVerticalScrollIndicator={false}
             data={discuss}
-            renderItem={({item}) => <Questions user={user} avatar={userAvatar} item={item}/>}
-            keyExtractor={item => item.id.toString()}
+            renderItem={({item}) => <Questions user={usuarioLogado.nick} avatar={usuarioLogado.userAvatar} item={item}/>}
+            keyExtractor={item => item.id}
             onRefresh={() => refresh()}
             refreshing={fetching}
+            // onEndReached={() => infinitScroll()}
+            onEndReachedThreshold={0.2}
           />
         </View>
 
@@ -159,6 +202,6 @@ export default function Home({ navigation }) {
           </View>
         </Modal>
 
-      </SafeAreaView>
+      </View>
     );
 }

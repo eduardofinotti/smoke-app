@@ -7,11 +7,6 @@ export default StyleSheet.create({
         backgroundColor: '#F3F8FF',
     },
 
-    titleContainer:{
-        marginTop: 5,
-        marginLeft: 20
-    },
-
     wellcome:{
         color: '#3282b8',
         fontWeight: 'bold',
