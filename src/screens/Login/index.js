@@ -7,6 +7,8 @@ import axios from 'axios'
 import UsuarioContext from '../../contexts/usuario'
 
 const ok = require('../../assets/ok.png')
+const logo = require('../../assets/logo.png')
+const logoText = require('../../assets/texto.png')
 
 import styles from './styles'
 
@@ -72,7 +74,13 @@ export default function Login({ navigation }) {
   }
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
+
+        <View style={styles.headerContainer}>
+          <Image source={logo} style={styles.logo} />
+          <Image source={logoText} style={styles.logoText} />
+        </View>
+
         <View style={styles.nickContainer}>
           <Text style={styles.nickTitle}>escolha um apelido</Text>
         </View>
@@ -80,7 +88,7 @@ export default function Login({ navigation }) {
         <View style={styles.inputContainer}>
           <TextInput style={styles.nickInput} 
             placeholder='ex: jonny bravo'
-            placeholderTextColor='#2E6B93'  
+            placeholderTextColor='#c4c4c4'  
             onChangeText={(text => {setUser(text)})}
             value={user}
           />
@@ -99,6 +107,6 @@ export default function Login({ navigation }) {
             <Image source={ok}></Image>
           </TouchableOpacity>
         </View>
-      </View>
+      </SafeAreaView>
     );
 }

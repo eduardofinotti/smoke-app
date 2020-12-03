@@ -7,9 +7,11 @@ import { UsuarioProvider } from './src/contexts/usuario';
 
 export default function App() {
   
+  StatusBar.setBarStyle('light-content', true);
+  
   return (
     <NavigationContainer>
-      <StatusBar barStyle='dark-content'/>
+      <StatusBar />
       <UsuarioProvider>
         <Routes />
       </UsuarioProvider>

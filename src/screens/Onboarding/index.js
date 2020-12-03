@@ -3,37 +3,36 @@ import React from 'react';
 import {View, Text, Image, StyleSheet, StatusBar} from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 
-const next = require('../../assets/next.png')
-const ok = require('../../assets/ok.png')
+const next = require('../../assets/next-black.png')
+const ok = require('../../assets/check.png')
 
 const data = [
   {
-    title: 'bem-vindo ao \nSmoke App',
-    text: 'suas mensagens apagadas em 24 horas!',
-    image: require('../../assets/ok.png'),
-    bg: '#0f4c75',
+    title: 'Inicie um assunto',
+    text: 'Inicie um assunto e aguarde outras pessoas comentarem',
+    image: require('../../assets/conversa.png'),
+    bg: '#212121',
   },
   {
-    title: 'você pode abrir uma discussão a qualquer comento!',
-    text: 'basta escolher um assunto',
-    image: require('../../assets/ok.png'),
-    bg: '#0f4c75',
+    title: '24 horas de duração',
+    text: 'Todas as mensagens e comentários \nexistem por apenas 24 horas. \nDepois disso são deletadas',
+    image: require('../../assets/cronometro.png'),
+    bg: '#212121',
   },
   {
-    title: 'responda as mensagens de outras pessoas',
-    text: "e torne a discussão ainda melhor",
-    image: require('../../assets/ok.png'),
-    bg: '#0f4c75',
+    title: 'Anonimato',
+    text: "Tudo isso de forma \ntotalmente anonima e secreta",
+    image: require('../../assets/agente.png'),
+    bg: '#212121',
   },
 ];
 
 export default function Onboarding({navigation}) {
   const _renderItem = ({item}) => {
     return (
-      <View
-        style={[ styles.slide, { backgroundColor: item.bg }]}>
-        <Text style={styles.title}>{item.title}</Text>
+      <View style={[ styles.slide, { backgroundColor: item.bg }]}>
         <Image source={item.image} style={styles.image} />
+        <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.text}>{item.text}</Text>
       </View>
     );
@@ -91,26 +90,32 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    alignContent: 'center'
   },
   image: {
-    marginVertical: 32,
-    width: 350 ,
-    height: 350
+    marginTop: -100,
+    width: 220 ,
+    height: 220,
   },
+
+  title: {
+    marginTop: 80,
+    fontSize: 24,
+    textAlign: 'center',
+    color: '#fff'
+  },
+
   text: {
-    color: '#bbe1fa',
+    marginTop: 30,
+    color: '#fff',
     textAlign: 'center',
     fontSize: 18
   },
-  title: {
-    fontSize: 24,
-    textAlign: 'center',
-    color: '#bbe1fa'
-  },
+
   buttonCircle: {
     width: 44,
     height: 44,
-    backgroundColor: '#bbe1fa',
+    backgroundColor: '#fff',
     borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
@@ -124,7 +129,7 @@ const styles = StyleSheet.create({
   },
 
   skip: {
-    color:"#bbe1fa", 
+    color:"#fff", 
     fontWeight: 'bold', 
     fontSize: 18
   }
