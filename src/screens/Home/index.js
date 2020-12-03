@@ -3,6 +3,8 @@ import { SafeAreaView, Text, View, TouchableOpacity, Image, FlatList, TextInput,
 import Modal from 'react-native-modal';
 import { Header, Right, Left } from "native-base";
 
+import SplashScreen from 'react-native-splash-screen'
+
 import Message from '../../components/Message'
 import UserAvatar from '../../components/UserAvatar'
 
@@ -32,6 +34,7 @@ export default function Home({ navigation }) {
     const { usuarioLogado } = useContext(UsuarioContext);
 
     useEffect(() => {
+      SplashScreen.hide()
       getMessages(0)
     }, [])
 

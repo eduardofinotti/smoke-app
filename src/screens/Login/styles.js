@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
     
@@ -11,7 +11,8 @@ export default StyleSheet.create({
         flexDirection: 'row',
         alignContent: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: Platform.OS == 'android' ? '15%' : 10
     },
 
     logo: {
@@ -60,7 +61,7 @@ export default StyleSheet.create({
 
     avatarContainer:{
         marginTop: 50,
-        marginHorizontal: 30
+        marginHorizontal: 30,
     },
 
 })
