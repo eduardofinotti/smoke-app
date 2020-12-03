@@ -20,7 +20,7 @@ const Message = (props) => {
       <View style={styles.header}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           
-          <UserAvatar uri={props.item.usuarioAvatar} style={{width: 45, height: 45}}/>
+          <UserAvatar uri={props.item.usuarioAvatar} style={{width: 46, height: 46}}/>
           
           <View style={styles.nameContainer}>
             <Text style={styles.userName}>{props.item.usuarioNick}</Text>

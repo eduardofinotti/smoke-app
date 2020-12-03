@@ -176,7 +176,7 @@ const Coment = (props) => {
     <View style={{ marginVertical: 15}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <UserAvatar uri={props.item.usuarioAvatar} />
-          <Text style={{fontSize: 15, fontWeight: 'bold', color: '#fff'}}>{props.user}</Text>
+          <Text style={{fontSize: 15, fontWeight: 'bold', color: '#fff', marginLeft: 5}}>{props.user}</Text>
         </View>
         <Text style={{color: '#c4c4c4', fontSize: 13, marginTop: 8}}> {props.item.texto}</Text>
     </View>
