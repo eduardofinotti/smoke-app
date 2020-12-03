@@ -1,20 +1,25 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { SafeAreaView, Text, View, TouchableOpacity, Image, FlatList, TextInput, Platform } from 'react-native';
+import { SafeAreaView, Text, View, TouchableOpacity, Image, FlatList, TextInput, TouchableWithoutFeedback } from 'react-native';
 import Modal from 'react-native-modal';
+import { Header, Right, Left } from "native-base";
 
-import axios from 'axios'
+import Message from '../../components/Message'
+import UserAvatar from '../../components/UserAvatar'
 
-import Questions from '../../components/Question'
+const enviados = require('../../assets/enviar.png')
+const comentarios = require('../../assets/comentarios.png')
+const favoritos = require('../../assets/favorito-on.png')
 
 const pen = require('../../assets/caneta.png')
-const comentarios = require('../../assets/comentarios.png')
+
 const next = require('../../assets/next.png')
 const logo = require('../../assets/logo.png')
+const logoText = require('../../assets/texto.png')
+
+import axios from 'axios'
+import UsuarioContext from '../../contexts/usuario';
 
 import styles from './styles'
-import UserAvatar from '../../components/UserAvatar';
-import UsuarioContext from '../../contexts/usuario';
-import { Header, Right, Left, Body } from "native-base";
 
 export default function Home({ navigation }) {
 
@@ -131,41 +136,46 @@ export default function Home({ navigation }) {
 
         <Header transparent>
           <Left>
-            <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 10, width: 500}}>
-              <UserAvatar uri={usuarioLogado.avatarUrl} />
-              <Text style={styles.wellcome}>Olá, @{usuarioLogado.nick}</Text>
+            <View style={styles.logoContainer}>
+              <Image source={logo} style={styles.logo}/>
+              <Image source={logoText} style={styles.logoText}/>
             </View>
           </Left>
-
-          <Body style={{justifyContent: 'flex-end', alignSelf: 'center', marginLeft: Platform.OS == 'android'? '35%': 0}}>
-            <Image source={logo} style={{width: 45, height: 40}}/>
-          </Body>
           
-          <Right>
-            <TouchableOpacity
-              onPress={() => goToMyMessages()}>
-                <Image source={comentarios} style={{width: 25, height: 25, marginRight: 10}}/>
+          <Right style={{marginRight: 10}}>
+            <TouchableOpacity onPress={() => goToMyMessages()}>
+                <Image source={enviados} style={styles.icon}/>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => goToMyMessages()}>
+                <Image source={comentarios} style={styles.icon}/>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => goToMyMessages()}>
+                <Image source={favoritos} style={styles.icon}/>
             </TouchableOpacity>
           </Right>
         </Header>
 
-        <View style={{ flex: 1,marginTop: 10, marginHorizontal: 20, marginBottom: 20}}>
+        <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
+          <View style={styles.inputContainer}>
+            <UserAvatar uri={usuarioLogado.avatarUrl} />
+            <Text style={styles.nickInput}> Inicie um assunto...</Text>
+          </View>
+        </TouchableWithoutFeedback>
+
+        <View style={{ flex: 1,marginTop: 10, marginHorizontal: 10, marginBottom: 20}}>
           <FlatList
             showsVerticalScrollIndicator={false}
             data={discuss}
-            renderItem={({item}) => <Questions user={usuarioLogado.nick} avatar={usuarioLogado.userAvatar} item={item}/>}
-            keyExtractor={item => item.id}
+            renderItem={({item}) => <Message user={usuarioLogado.nick} avatar={usuarioLogado.userAvatar} item={item}/>}
+            keyExtractor={(item, index) => item.id.toString()}
             onRefresh={() => refresh()}
             refreshing={fetching}
             // onEndReached={() => infinitScroll()}
-            onEndReachedThreshold={0.2}
+            // onEndReachedThreshold={0.5}
+            // initialNumToRender={10}
           />
-        </View>
-
-        <View style={{margin: 30, position: 'absolute', right: 0, bottom: 0}}>
-          <TouchableOpacity style={styles.addDiscus} onPress={() => setModalVisible(true)}>
-            <Image source={pen}/>
-          </TouchableOpacity>
         </View>
 
         <Modal isVisible={modalVisible} style={{margin: 0}} propagateSwipe
@@ -174,22 +184,25 @@ export default function Home({ navigation }) {
 
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-
-              <View style={styles.header}>
-                <Text style={styles.title}>inicie um assunto</Text>
+            
+              <View style={styles.headerContainerModal}>
+                <UserAvatar uri={usuarioLogado.avatarUrl} />
+                <Text style={styles.nick}>{usuarioLogado.nick}</Text>
               </View>
 
               <View style={styles.messageAreaInput}>
                 <TextInput
                   maxLength={150} 
+                  placeholder='Inicie um assunto...'
                   style={styles.inputNewMessage}
+                  placeholderTextColor='#c4c4c4'
                   multiline={true}
                   numberOfLines={10}
                   onChangeText={(text) => handleMessage(text)}
                   value={message}/>
               </View>
               <View style={{alignItems: 'flex-end', marginRight: 5}}>
-                <Text>{countChar}/150</Text>
+                <Text style={styles.cont} >{countChar}/150</Text>
               </View>
 
               <View style={styles.readyContainer} >

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, Image, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
 import axios from 'axios'
-import Questions from '../../components/Question'
+import Message from '../../components/Message'
 const logo = require('../../assets/logo.png')
 import styles from './styles'
 import UsuarioContext from '../../contexts/usuario';
@@ -45,7 +45,7 @@ export default function MyMessages({ route, navigation }) {
           <FlatList 
             showsVerticalScrollIndicator={false}
             data={messages}
-            renderItem={({item}) => <Questions item={item}/>}
+            renderItem={({item}) => <Message item={item}/>}
             keyExtractor={item => item.id.toString()}
           />
         </View>

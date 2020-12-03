@@ -6,7 +6,7 @@ import UserAvatar from './UserAvatar'
 const comentarios = require('../assets/comentarios.png')
 var moment = require('moment'); // require
 
-const Question = (props) => {
+const Message = (props) => {
 
   const navigation = useNavigation();
 
@@ -19,24 +19,24 @@ const Question = (props) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <UserAvatar uri={props.item.usuarioAvatar} />
-          <Text style={styles.userName}>{props.item.usuarioNick}</Text>
-        </View>
-        <View style={styles.timeContainer}>
-          <Text style={styles.time}>{props.item.timeout}</Text>
+          
+          <UserAvatar uri={props.item.usuarioAvatar} style={{width: 45, height: 45}}/>
+          
+          <View style={styles.nameContainer}>
+            <Text style={styles.userName}>{props.item.usuarioNick}</Text>
+            <Text style={styles.time}>{props.item.timeout}</Text>
+          </View>
+
         </View>
       </View>
       
       <View style={styles.body}>
-        <Text style={styles.discuss}>
-          {props.item.texto}
-        </Text>
+        <Text style={styles.message}>{props.item.texto}</Text>
       </View> 
         
-      <TouchableOpacity style={styles.footer, {flexDirection: 'row', alignItems: 'center',}} 
-        onPress={()=> goToDetails(props.item)}>
+      <TouchableOpacity style={styles.footer} onPress={()=> goToDetails(props.item)}>
         <Image source={comentarios} style={styles.imageComents}/>
-        <Text style={styles.time}>{props.item.totalComentario} comentários </Text>
+        <Text style={styles.comentsText}>{props.item.totalComentario} comentários...</Text>
       </TouchableOpacity>
     </View>
   );
@@ -47,66 +47,62 @@ const styles = StyleSheet.create({
 
   container: {
     marginTop: 10,
-    backgroundColor: '#D7EDFC',
+    backgroundColor: '#212121',
     height: 170,
     borderRadius: 10,
-    padding: 8
+    padding: 8,
   },
 
   header: {
     flexDirection: 'row',
-    alignItems: 'center',
-    alignContent: 'center',
-    justifyContent: 'space-between'
+  },
+
+  nameContainer: {
+    paddingLeft: 5
   },
 
   userName: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: 'bold',
-    color: '#3282b8',
-    marginLeft: 5
-  },
-
-  timeContainer: {
-    alignItems: 'flex-end',
+    color: '#fff',
   },
 
   time: {
-    color: '#0f4c75',
+    color: '#c4c4c4',
     fontSize: 12,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginTop: 5
   },
 
   body: {
     flex: 1,
     width: '90%',
-    paddingLeft: 15,
-    paddingTop: 8
+    paddingTop: 15
   },
 
-  discuss: {
-    color: '#0f4c75',
+  message: {
+    color: '#fff',
     fontSize: 14
   },
 
   footer: {
-    justifyContent: 'flex-end',
-    alignContent: 'flex-end',
+    alignContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     height: 30,
-    // backgroundColor: '#99C7E5',
-    padding: 7,
-    borderRadius: 10
   },
 
   imageComents: {
     width: 17,
     height: 17,
-    marginHorizontal: 7
-  }
+    marginRight: 7
+  },
+
+  comentsText: {
+    color: '#c4c4c4',
+    fontSize: 12,
+  },
 
 });
 
-export default Question
+export default Message

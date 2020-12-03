@@ -4,7 +4,25 @@ export default StyleSheet.create({
     
     container: {
         flex: 1,
-        backgroundColor: '#bbe1fa',
+        backgroundColor: '#212121',
+    },
+
+    headerContainer: {
+        flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    logo: {
+        width: 50,
+        height: 45
+    },
+
+    logoText: {
+        width: 95,
+        height: 25,
+        marginHorizontal: 8
     },
 
     nickContainer:{
@@ -15,13 +33,13 @@ export default StyleSheet.create({
     nickTitle:{
         fontSize: 22,
         fontWeight: 'bold',
-        color: '#0f4c75'
+        color: '#fff'
     },  
     
     inputContainer:{
-        backgroundColor: '#0f4c75',
+        backgroundColor: '#383838',
         marginTop: 10,
-        borderRadius: 20,
+        borderRadius: 10,
         paddingLeft: 15,
         height: 50,
         alignItems: 'center',
@@ -30,7 +48,7 @@ export default StyleSheet.create({
     },
 
     nickInput:{
-        color: '#bbe1fa',
+        color: '#fff',
         width: '100%',
         fontSize: 18
     },

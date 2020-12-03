@@ -4,7 +4,7 @@ export default StyleSheet.create({
     
     container:{
         flex: 1,
-        backgroundColor: '#F3F8FF',
+        backgroundColor: '#212121',
     },
 
     header: {
@@ -12,9 +12,9 @@ export default StyleSheet.create({
     },
 
     title:{
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: 'bold',
-        color: '#0f4c75',
+        color: '#c4c4c4',
         marginLeft: 10
     }
 })

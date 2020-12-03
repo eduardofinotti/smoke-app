@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
 
   black:{
-    backgroundColor: '#0f4c75'
+    backgroundColor: '#fff'
   },
 
   avatarContainer: {
