@@ -49,7 +49,6 @@ export default StyleSheet.create({
       modalView: {
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        padding: 20,
         width: '100%',
         height: '80%',
         backgroundColor: '#bbe1fa',
@@ -71,14 +70,14 @@ export default StyleSheet.create({
 
       messageAreaInput: {
         backgroundColor: '#89B4D1',
-        height: 160,
+        height: 20,
         borderRadius: 10,
         padding: 7,
         marginTop: '8%'
     },
 
     inputNewMessage: {
-        height: 160, 
+        height: 20, 
         textAlignVertical: 'top', 
         color: '#0f4c75', 
         fontSize: 14

@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserAvatar from '../../components/UserAvatar'
 import { SafeAreaView, Text, View, TouchableOpacity, Image, 
-    StyleSheet, FlatList, TextInput } from 'react-native';
+    StyleSheet, FlatList, TextInput, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import axios from 'axios'
 import UsuarioContext from '../../contexts/usuario';
 import Message from '../../components/Message';
+import SendMessage from '../../components/SendMessage'
 import { Header, Left, Body, Right } from "native-base";
 
 import { useKeyboard } from '@react-native-community/hooks'
@@ -29,7 +30,7 @@ const Details = ({ route, navigation }) => {
 
   const { item, user } = route.params;
 
-  const [comentario, setComentario] = useState('')
+  const [modalVisible, setModalVisible] = useState(false)
   const [height, setHeight] = useState(0)
   const [comentarios, setComentarios] = useState('')
   const [fetching, setFetching] = useState(false)
@@ -65,7 +66,7 @@ const Details = ({ route, navigation }) => {
     }
   }
 
-  async function sendComentario() {
+  async function sendComentario(comentario) {
     await axios.post('http://162.241.90.38:7003/v1/comentario', {
       "texto": comentario,
       "usuarioId": userId,
@@ -80,7 +81,6 @@ const Details = ({ route, navigation }) => {
     ]
 
     await setComentarios(list)
-    await setComentario('')
 
     getComents()
   })
@@ -100,6 +100,10 @@ const Details = ({ route, navigation }) => {
     keyboard.keyboardShown = false
     keyboard.keyboardHeight = 0
     console.log('FINOTTI')
+  }
+
+  function closeModal() {
+    setModalVisible(false)
   }
 
     return (
@@ -124,7 +128,7 @@ const Details = ({ route, navigation }) => {
 
         <View style = {styles.lineStyle} />
 
-        <View style={{ marginTop: 0, marginHorizontal: 20, height: '57%'}}>
+        <View style={{ marginTop: 0, marginHorizontal: 20}}>
           <FlatList 
             showsVerticalScrollIndicator={false}
             data={comentarios}
@@ -135,36 +139,25 @@ const Details = ({ route, navigation }) => {
           />
         </View>
 
-        <View style={{ position: 'absolute', width: '105%', bottom: Platform.OS == 'ios' ? keyboard.keyboardHeight : 0 }}>
-          <View style={[styles.textInputParentView, {backgroundColor: '#323334'}]}>
-
-            <UserAvatar uri={usuarioLogado.avatarUrl} style={{ width: 40, height: 40}}/>
-            
-            <View style={styles.textInputView}>
-                <TextInput
-                  editable={true}
-                  multiline={true}
-                  placeholder='Aa'
-                  placeholderTextColor='#c4c4c4'
-                  placeholderStyle={[styles.placeholderStyle]}
-                  underlineColorAndroid='transparent'
-                  value={comentario}
-                  onChangeText={(editedText) => {setComentario(editedText)}}
-                  // onContentSizeChange={(event) => changeKeyboard(event)}
-                  onContentSizeChange={(event) => setHeight(event.nativeEvent.contentSize.height)}
-                  style={[styles.textInputStyle,{ backgroundColor: '#757575', color: '#fff' }]}/>
+        <KeyboardAvoidingView 
+          style={{position: 'absolute', left: 0, right: 0, bottom: 10}} 
+          behavior="position"
+        >
+          <TouchableWithoutFeedback 
+            onPress={() => setModalVisible(true)}
+          >
+            <View style={styles.inputContainer}>
+              <UserAvatar uri={usuarioLogado.avatarUrl} />
+              <Text style={styles.nickInput}> Comentar...</Text>
             </View>
-
-            <TouchableOpacity disabled={validateTextInput(comentario)} onPress={sendComentario}>
-              <View style={{ justifyContent: 'flex-end' }}>
-                <View style={styles.sendButtonStyle}>
-                  <Image style={{ width: 25, height: 25 }} source={enviar} />
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-      
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+        
+        <SendMessage
+          show={modalVisible}
+          closeModal={closeModal}
+          sendMessage={sendComentario}
+        />
       </View>
     );
 }
@@ -278,7 +271,21 @@ const styles = StyleSheet.create({
   placeholderStyle:{
       fontSize: 12,
       textAlignVertical: 'center'
-  }
+  },
+  inputContainer:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#383838',
+    borderRadius: 12,
+    paddingLeft: 10,
+    height: 50,
+    marginHorizontal: 10
+  },
+
+  nickInput:{
+      color: '#c4c4c4',
+      fontSize: 18
+  },
 });
 
 export default Details

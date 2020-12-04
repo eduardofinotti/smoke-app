@@ -7,6 +7,7 @@ import SplashScreen from 'react-native-splash-screen'
 
 import Message from '../../components/Message'
 import UserAvatar from '../../components/UserAvatar'
+import SendMessage from '../../components/SendMessage'
 
 const enviados = require('../../assets/enviar.png')
 const comentarios = require('../../assets/comentarios.png')
@@ -28,8 +29,6 @@ export default function Home({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false)
     const [fetching, setFetching] = useState(false)
     const [discuss, setDiscuss] = useState()
-    const [message, setMessage] = useState()
-    const [countChar, setCountChar] = useState(0)
     const [page, setPage] = useState(0)
     const { usuarioLogado } = useContext(UsuarioContext);
 
@@ -95,12 +94,7 @@ export default function Home({ navigation }) {
       setFetching(false)
     }
 
-    function handleMessage(text) {
-      setMessage(text)
-      setCountChar(text.length)
-    }
-
-    function saveMessage() {
+    function saveMessage(message) {
       axios.post('http://162.241.90.38:7003/v1/mensagem', 
       {
         "texto": message,
@@ -114,10 +108,6 @@ export default function Home({ navigation }) {
         ...discuss
       ]
       await setDiscuss(list)
-      
-      setModalVisible(false)
-      setMessage('')
-      setCountChar(0)
     })
     .catch(function (error) {
       console.log(error);
@@ -125,9 +115,7 @@ export default function Home({ navigation }) {
     }
 
     function closeModal() {
-      setMessage('') 
       setModalVisible(false)
-      setCountChar(0)
     }
 
     function goToMyMessages() {
@@ -181,43 +169,11 @@ export default function Home({ navigation }) {
           />
         </View>
 
-        <Modal isVisible={modalVisible} style={{margin: 0}} propagateSwipe
-          onSwipeComplete={() => closeModal()} onBackdropPress={() => setModalVisible(false)}
-          swipeDirection="down">
-
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-            
-              <View style={styles.headerContainerModal}>
-                <UserAvatar uri={usuarioLogado.avatarUrl} />
-                <Text style={styles.nick}>{usuarioLogado.nick}</Text>
-              </View>
-
-              <View style={styles.messageAreaInput}>
-                <TextInput
-                  maxLength={150} 
-                  placeholder='Inicie um assunto...'
-                  style={styles.inputNewMessage}
-                  placeholderTextColor='#c4c4c4'
-                  multiline={true}
-                  numberOfLines={10}
-                  onChangeText={(text) => handleMessage(text)}
-                  value={message}/>
-              </View>
-              <View style={{alignItems: 'flex-end', marginRight: 5}}>
-                <Text style={styles.cont} >{countChar}/150</Text>
-              </View>
-
-              <View style={styles.readyContainer} >
-                <TouchableOpacity onPress={saveMessage}>
-                  <Image source={next} />
-                </TouchableOpacity>
-              </View>
-              
-            </View>
-          </View>
-        </Modal>
-
+        <SendMessage
+          show={modalVisible}
+          closeModal={closeModal}
+          sendMessage={saveMessage}
+        />
       </View>
     );
 }

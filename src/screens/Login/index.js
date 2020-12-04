@@ -1,7 +1,7 @@
 
  import React, { useContext, useState } from 'react';
 
-import { SafeAreaView, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, TextInput, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import UserAvatar from '../../components/UserAvatar'
 import axios from 'axios'
 import UsuarioContext from '../../contexts/usuario'
@@ -59,7 +59,7 @@ export default function Login({ navigation }) {
     return listAvatarUrl.map(item => (
       <UserAvatar uri={item}
         key={item}
-        selected={item === avatar }
+        // selected={item === avatar }
         style={{
           width: 54,
           height: 54,
@@ -68,13 +68,14 @@ export default function Login({ navigation }) {
           marginTop: 10,
           marginBottom: 10
         }}
-        onPress={()=> setAvatar(item)}  
+        onPress={() => setAvatar(item)}  
       />
     ));
   }
 
     return (
       <SafeAreaView style={styles.container}>
+        <ScrollView>
 
         <View style={styles.headerContainer}>
           <Image source={logo} style={styles.logo} />
@@ -107,6 +108,7 @@ export default function Login({ navigation }) {
             <Image source={ok}></Image>
           </TouchableOpacity>
         </View>
+      </ScrollView>
       </SafeAreaView>
     );
 }
