@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserAvatar from '../../components/UserAvatar'
-import { SafeAreaView, Text, View, TouchableOpacity, Image, 
-    StyleSheet, FlatList, TextInput, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+import { Text, View, TouchableOpacity, Image, 
+    StyleSheet, FlatList, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import axios from 'axios'
 import UsuarioContext from '../../contexts/usuario';
@@ -9,34 +9,19 @@ import Message from '../../components/Message';
 import SendMessage from '../../components/SendMessage'
 import { Header, Left, Body, Right } from "native-base";
 
-import { useKeyboard } from '@react-native-community/hooks'
-
-
-
-const pen = require('../../assets/caneta.png')
-const comentLogo = require('../../assets/comentarios.png')
-const next = require('../../assets/next.png')
 const back = require('../../assets/back.png')
-const enviar = require('../../assets/enviar.png')
 const logo = require('../../assets/logo.png')
 const logoText = require('../../assets/texto.png')
 
 const Details = ({ route, navigation }) => {
 
-  const keyboard = useKeyboard()
-
-  console.log('keyboard isKeyboardShow: ', keyboard.keyboardShown)
-  console.log('keyboard keyboardHeight: ', keyboard.keyboardHeight)
-
-  const { item, user } = route.params;
+  const { item } = route.params;
 
   const [modalVisible, setModalVisible] = useState(false)
   const [height, setHeight] = useState(0)
   const [comentarios, setComentarios] = useState('')
   const [fetching, setFetching] = useState(false)
-  const [userAvatar, setUserAvatar] = useState('https://cdn.pixabay.com/photo/2013/07/12/16/34/vampire-151178_960_720.png')
-  const [userId, setUserId] = useState(0)
-
+  
   const { usuarioLogado } = useContext(UsuarioContext);
 
   useEffect(()=>{
@@ -45,10 +30,6 @@ const Details = ({ route, navigation }) => {
 
 
   async function getComents() {
-    // tem q eliminar essas variaveis e usar soh os dados da usuarioLogado
-    await setUserAvatar(usuarioLogado.avatarUrl)
-    await setUserId(usuarioLogado.id)
-
     await axios.get(`http://162.241.90.38:7003/v1/mensagem/${item.id}/comentario`)
     .then(async function (response) {
       await setComentarios(response.data)
@@ -58,18 +39,10 @@ const Details = ({ route, navigation }) => {
     });
   }
 
-  function validateTextInput(text ){
-    if(text.length === 0){
-        return true;
-    }else{
-        return false;
-    }
-  }
-
   async function sendComentario(comentario) {
     await axios.post('http://162.241.90.38:7003/v1/comentario', {
       "texto": comentario,
-      "usuarioId": userId,
+      "usuarioId": usuarioLogado.id,
       "mensagemId": item.id
     }
   )
@@ -95,13 +68,6 @@ const Details = ({ route, navigation }) => {
     setFetching(false)
   }
   
-  function changeKeyboard(event) {
-    setHeight(event.nativeEvent.contentSize.height)
-    keyboard.keyboardShown = false
-    keyboard.keyboardHeight = 0
-    console.log('FINOTTI')
-  }
-
   function closeModal() {
     setModalVisible(false)
   }
@@ -138,26 +104,25 @@ const Details = ({ route, navigation }) => {
             refreshing={fetching}
           />
         </View>
-
-        <KeyboardAvoidingView 
-          style={{position: 'absolute', left: 0, right: 0, bottom: 10}} 
-          behavior="position"
-        >
-          <TouchableWithoutFeedback 
-            onPress={() => setModalVisible(true)}
+         <KeyboardAvoidingView 
+            style={{position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: '#212121', padding: 8}} 
+            behavior="position"
           >
-            <View style={styles.inputContainer}>
-              <UserAvatar uri={usuarioLogado.avatarUrl} />
-              <Text style={styles.nickInput}> Comentar...</Text>
-            </View>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-        
-        <SendMessage
-          show={modalVisible}
-          closeModal={closeModal}
-          sendMessage={sendComentario}
-        />
+            <TouchableWithoutFeedback 
+              onPress={() => setModalVisible(true)}
+            >
+              <View style={styles.inputContainer}>
+                <UserAvatar uri={usuarioLogado.avatarUrl} />
+                <Text style={styles.nickInput}> Comentar...</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
+          
+          <SendMessage
+            show={modalVisible}
+            closeModal={closeModal}
+            sendMessage={sendComentario}
+          />
       </View>
     );
 }
@@ -201,76 +166,6 @@ const styles = StyleSheet.create({
       width: 95,
       height: 25,
       marginHorizontal: 8
-  }, 
-
-  footer: {
-    justifyContent: 'flex-end',
-    alignContent: 'flex-end',
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: 30,
-    padding: 7,
-    borderRadius: 10
-  },
-
-  textAreaSendComent:{
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    margin: 10,
-    marginTop: 15,
-    borderRadius: 15,
-    height: 80,
-    padding: 8,
-    justifyContent: 'center',
-    width: '97%',
-  },
-
-  comentarioInput:{
-    color: '#0f4c75',
-    width: '90%',
-    fontSize: 14,
-    textAlignVertical: 'top', 
-  },
-
-  textInputParentView: {
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    alignItems: 'center',
-  },
-
-  textInputView: {
-      flex: 1,
-      marginRight: 10,
-      marginLeft: 8,
-  },
-
-  textInputStyle: {
-      fontSize: 14,
-      overflow: 'hidden',
-      justifyContent: 'center',
-      alignContent: 'center',
-      alignItems: 'center',
-      flexWrap: 'wrap',
-      paddingLeft: 20,
-      paddingTop: 8,
-      textAlign: 'left',
-      borderRadius: 20,
-      height: Platform.OS == 'ios'? 35 : 40
-  },
-
-  sendButtonStyle: {
-      paddingVertical: 10,
-      paddingLeft: 10,
-      paddingRight: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-  },
-
-  placeholderStyle:{
-      fontSize: 12,
-      textAlignVertical: 'center'
   },
   inputContainer:{
     flexDirection: 'row',
@@ -278,8 +173,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#383838',
     borderRadius: 12,
     paddingLeft: 10,
-    height: 50,
-    marginHorizontal: 10
+    height: 50
   },
 
   nickInput:{
