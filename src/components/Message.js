@@ -63,15 +63,14 @@ const Message = (props) => {
 
         </View>
       </View>
-      
-      <View style={styles.body}>
-        <Text style={styles.message}>{props.item.texto}</Text>
-      </View> 
-        
-      <TouchableOpacity style={styles.footer} onPress={()=> goToDetails(props.item)}>
-        <Image source={comentarios} style={styles.imageComents}/>
-        <Text style={styles.comentsText}>{props.item.totalComentario} comentários...</Text>
+      <TouchableOpacity onPress={()=> goToDetails(props.item)}>  
+        <View style={styles.body}>
+          <Text style={styles.message}>{props.item.texto}</Text>
+        </View> 
       </TouchableOpacity>
+    
+      <Image source={comentarios} style={styles.imageComents}/>
+      <Text style={styles.comentsText}>{props.item.totalComentario} comentários...</Text>
     </View>
   );
 }
@@ -103,6 +102,7 @@ const styles = StyleSheet.create({
   favoriteIcon: {
     width: 20,
     height: 20,
+    marginRight: 10
   },  
 
   userName: {

@@ -23,11 +23,13 @@ import UsuarioContext from '../../contexts/usuario';
 
 import styles from './styles'
 
+const ITENS_POR_PAGINA = 30
+
 export default function Home({ navigation }) {
 
     const [modalVisible, setModalVisible] = useState(false)
     const [fetching, setFetching] = useState(false)
-    const [discuss, setDiscuss] = useState({})
+    const [discuss, setDiscuss] = useState([])
     const [page, setPage] = useState(0)
     const { usuarioLogado } = useContext(UsuarioContext);
 
@@ -37,13 +39,15 @@ export default function Home({ navigation }) {
     }, [])
 
     function getMessages() {
+      console.log('refresh...')
+      setFetching(true)
       setPage(0)
 
       axios.post('http://162.241.90.38:7003/v1/mensagem/pagination', 
         {
           "usuarioId": usuarioLogado.id,
           "pageNo": 0,
-          "pageSize": 5
+          "pageSize": ITENS_POR_PAGINA
         }
       )
       .then(async function (response) {
@@ -51,58 +55,49 @@ export default function Home({ navigation }) {
       })
       .catch(function (error) {
         console.log(error);
-      });
+      })
+      .finally(() => {
+        setFetching(false)
+      })
     }
 
     function getMessagesInfinity() {
+      console.log('infinit...')
+      setFetching(true)
+      console.log("page: " + (page + 1))
+      axios.post('http://162.241.90.38:7003/v1/mensagem/pagination', 
+        {
+          "usuarioId": usuarioLogado.id,
+          "pageNo": page + 1,
+          "pageSize": ITENS_POR_PAGINA
+        }
+      )
+      .then(async function (response) {
+        if(response.data.numberOfElements > 0){
+          response.data.content.forEach(element => {
+            discuss.push(element)
+          });
 
-      console.log("page: " + page)
-
-      if(page > 0) {
-        axios.post('http://162.241.90.38:7003/v1/mensagem/pagination', 
-          {
-            "usuarioId": usuarioLogado.id,
-            "pageNo": 1,
-            "pageSize": 5
-          }
-        )
-        .then(async function (response) {
-          if(response.data.numberOfElements > 0){
-
-            console.log(...discuss)
-            console.log('---------')
-            console.log(response.data.content)
-
-
-            let item = [ 
-              ...discuss,
-              response.data.content,
-            ]
-
-            await setDiscuss(item)
-            setPage(page+1)
-
-            console.log('foi')
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      }
+          await setDiscuss(discuss)
+          setPage(page+1)
+        } else {
+          console.log('Chegou no fim...')
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(() => {
+        setFetching(false)
+      })
     }
 
     async function refresh() {
-      console.log('refresh...')
-      setFetching(true)
       await getMessages()
-      setFetching(false)
     }
 
     async function infinitScroll() {
-      console.log('infinit...')
-      setFetching(true)
       await getMessagesInfinity()
-      setFetching(false)
     }
 
     function saveMessage(message) {
@@ -173,8 +168,8 @@ export default function Home({ navigation }) {
               onRefresh={() => refresh()} />}
 
             onEndReached={() => infinitScroll()}
-            onEndReachedThreshold={0.1}
-            // initialNumToRender={10}
+            onEndReachedThreshold={2}
+            initialNumToRender={10}
           />
         </View>
 
