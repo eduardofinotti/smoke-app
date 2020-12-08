@@ -1,6 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import {View, Text, Image, StyleSheet, StatusBar} from 'react-native';
+import {View, Text, Image, StyleSheet} from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 
 const next = require('../../assets/next-black.png')
@@ -70,7 +69,6 @@ export default function Onboarding({navigation}) {
 
     return (
       <View style={{flex: 1}}>
-        <StatusBar translucent backgroundColor="transparent" />
         <AppIntroSlider
           keyExtractor={_keyExtractor}
           renderDoneButton={_renderDoneButton}

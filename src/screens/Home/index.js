@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { SafeAreaView, Text, View, TouchableOpacity, Image, FlatList, TextInput, TouchableWithoutFeedback } from 'react-native';
-import Modal from 'react-native-modal';
+import { Text, View, TouchableOpacity, Image, FlatList, RefreshControl, TouchableWithoutFeedback } from 'react-native';
 import { Header, Right, Left } from "native-base";
 
 import SplashScreen from 'react-native-splash-screen'
@@ -28,7 +27,7 @@ export default function Home({ navigation }) {
 
     const [modalVisible, setModalVisible] = useState(false)
     const [fetching, setFetching] = useState(false)
-    const [discuss, setDiscuss] = useState()
+    const [discuss, setDiscuss] = useState({})
     const [page, setPage] = useState(0)
     const { usuarioLogado } = useContext(UsuarioContext);
 
@@ -42,6 +41,7 @@ export default function Home({ navigation }) {
 
       axios.post('http://162.241.90.38:7003/v1/mensagem/pagination', 
         {
+          "usuarioId": usuarioLogado.id,
           "pageNo": 0,
           "pageSize": 5
         }
@@ -56,28 +56,39 @@ export default function Home({ navigation }) {
 
     function getMessagesInfinity() {
 
-      console.log(page)
-      axios.post('http://162.241.90.38:7003/v1/mensagem/pagination', 
-        {
-          "pageNo": page,
-          "pageSize": 5
-        }
-      )
-      .then(async function (response) {
-        if(response.data.numberOfElements > 0){
+      console.log("page: " + page)
 
-          let list = [ 
-            ...discuss,
-            response.data.content
-          ]
+      if(page > 0) {
+        axios.post('http://162.241.90.38:7003/v1/mensagem/pagination', 
+          {
+            "usuarioId": usuarioLogado.id,
+            "pageNo": 1,
+            "pageSize": 5
+          }
+        )
+        .then(async function (response) {
+          if(response.data.numberOfElements > 0){
 
-          await setDiscuss(list)
-          setPage(page+1)
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+            console.log(...discuss)
+            console.log('---------')
+            console.log(response.data.content)
+
+
+            let item = [ 
+              ...discuss,
+              response.data.content,
+            ]
+
+            await setDiscuss(item)
+            setPage(page+1)
+
+            console.log('foi')
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      }
     }
 
     async function refresh() {
@@ -118,13 +129,8 @@ export default function Home({ navigation }) {
       setModalVisible(false)
     }
 
-    function goToMyMessages() {
-      navigation.navigate('MyMessages', {userId: usuarioLogado.id})
-    }
-
     return (
       <View style={styles.container}>
-
         <Header transparent>
           <Left>
             <View style={styles.logoContainer}>
@@ -134,16 +140,14 @@ export default function Home({ navigation }) {
           </Left>
           
           <Right style={{marginRight: 10}}>
-            <TouchableOpacity onPress={() => goToMyMessages()}>
-                <Image source={enviados} style={styles.icon}/>
+            <TouchableOpacity onPress={()=> {
+              navigation.navigate('MyMessages', {title: 'Mensagens Criadas'}) }}>
+              <Image source={enviados} style={styles.icon}/>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => goToMyMessages()}>
-                <Image source={comentarios} style={styles.icon}/>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => goToMyMessages()}>
-                <Image source={favoritos} style={styles.icon}/>
+            <TouchableOpacity onPress={() => {
+              navigation.navigate('MyMessages', {title: 'Favoritos'}) }}>
+              <Image source={favoritos} style={styles.icon}/>
             </TouchableOpacity>
           </Right>
         </Header>
@@ -161,10 +165,15 @@ export default function Home({ navigation }) {
             data={discuss}
             renderItem={({item}) => <Message user={usuarioLogado.nick} avatar={usuarioLogado.userAvatar} item={item}/>}
             keyExtractor={(item, index) => item.id.toString()}
-            onRefresh={() => refresh()}
-            refreshing={fetching}
-            // onEndReached={() => infinitScroll()}
-            // onEndReachedThreshold={0.5}
+            refreshControl={<RefreshControl
+              title="Atualizando..."
+              tintColor="#fff"
+              titleColor="#fff"
+              refreshing={fetching}
+              onRefresh={() => refresh()} />}
+
+            onEndReached={() => infinitScroll()}
+            onEndReachedThreshold={0.1}
             // initialNumToRender={10}
           />
         </View>

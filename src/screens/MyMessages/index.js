@@ -8,17 +8,23 @@ import UsuarioContext from '../../contexts/usuario';
 
 export default function MyMessages({ route, navigation }) {
 
+    const { title } = route.params;
+
     const { usuarioLogado } = useContext(UsuarioContext);
 
     const [messages, setMessages] = useState()
     const back = require('../../assets/back.png')
     
     useEffect(() => {
-      loadMyMessages()
+      if(title.includes('Criadas')){
+        loadMyMessages('mensagem')
+      } else {
+        loadMyMessages('favoritas')
+      }      
     }, [])
 
-    function loadMyMessages() {
-      axios.get(`http://162.241.90.38:7003/v1/usuario/${usuarioLogado.id}/mensagem`)
+    function loadMyMessages(rota) {
+      axios.get(`http://162.241.90.38:7003/v1/usuario/${usuarioLogado.id}/${rota}`)
       .then(function (response) {
         setMessages(response.data)
       })
@@ -34,14 +40,14 @@ export default function MyMessages({ route, navigation }) {
             <Image source={back} />
           </TouchableOpacity>
           
-          <Text style={styles.title}>Minhas Mensagens</Text>
+          <Text style={styles.title}>{title}</Text>
           
           <View style={{ marginRight: 10,  alignItems: 'flex-end'}}>
             <Image source={logo} style={{width: 45, height: 40, }}/>
           </View>
         </View>
 
-        <View style={{ marginTop: 10, marginHorizontal: 20, paddingBottom: '28%'}}>
+        <View style={{ marginTop: 20, marginHorizontal: 20, paddingBottom: '28%'}}>
           <FlatList 
             showsVerticalScrollIndicator={false}
             data={messages}

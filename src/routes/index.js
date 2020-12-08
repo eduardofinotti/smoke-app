@@ -6,7 +6,7 @@ import Login from '../screens/Login'
 import Home from '../screens/Home'
 import Onboarding from '../screens/Onboarding'
 import Details from '../screens/Details'
-import MyMessages from '../screens/Messages/mymessages'
+import MyMessages from '../screens/MyMessages'
 
 import UsuarioContext from '../contexts/usuario'
 
@@ -78,7 +78,6 @@ const Routes = () => {
                 }}
             />
             </Stack.Navigator>
-        
 }
 
 export default Routes;

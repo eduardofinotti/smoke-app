@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native'
-import { StatusBar } from 'react-native';
+import { StatusBar, Platform } from 'react-native';
 import Routes from './src/routes';
 import { UsuarioProvider } from './src/contexts/usuario';
 
@@ -9,7 +9,7 @@ import SplashScreen from 'react-native-splash-screen'
 
 export default function App() {
   
-  StatusBar.setBarStyle('light-content', true);
+  StatusBar.setBarStyle("light-content")
 
   useEffect(() => {
     SplashScreen.hide()
@@ -17,7 +17,9 @@ export default function App() {
   
   return (
     <NavigationContainer>
-      <StatusBar/>
+
+      <StatusBar /> 
+
       <UsuarioProvider>
         <Routes />
       </UsuarioProvider>

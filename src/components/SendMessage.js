@@ -32,50 +32,42 @@ const SendMessage = (props) => {
     }
 
     return (
-        <Modal isVisible={props.show} style={{margin: 0}}
-            propagateSwipe
-            onSwipeComplete={() => close() } 
-            onBackdropPress={() => close() }
-            swipeDirection="down">
+      <Modal isVisible={props.show} style={{margin: 0}}
+          propagateSwipe
+          onSwipeComplete={() => close() } 
+          onBackdropPress={() => close() }
+          swipeDirection="down">
 
-          <View 
-            style={styles.centeredView}
-          >
-            <View 
-              style={styles.modalView}
-              >
-            
-              <View 
-                style={styles.headerContainerModal}
-                >
-                <UserAvatar uri={usuarioLogado.avatarUrl} />
-                <Text style={styles.nick}>{usuarioLogado.nick}</Text>
-              </View>
+        <View  style={styles.centeredView}>
+          <View style={styles.modalView} >
+          
+            <View style={styles.headerContainerModal} >
+              <UserAvatar uri={usuarioLogado.avatarUrl} />
+              <Text style={styles.nick}>{usuarioLogado.nick}</Text>
+            </View>
 
-              <View 
-                style={styles.messageAreaInput}
-                >
-                <TextInput
-                  autoFocus
-                  maxLength={150} 
-                  placeholder='Inicie um assunto...'
-                  returnKeyType='send'
-                  color='white'
-                  placeholderTextColor='#c4c4c4'
-                  onChangeText={(text) => handleMessage(text)}
-                  onSubmitEditing={() => { 
-                    props.sendMessage(message)
-                    close()
-                  }}
-                  value={message}/>
-              </View>
-              <View style={{alignItems: 'flex-end', marginRight: 5}}>
-                <Text style={styles.cont} >{countChar}/150</Text>
-              </View>
+            <View style={styles.messageAreaInput} >
+              <TextInput
+                autoFocus
+                maxLength={150} 
+                placeholder='Inicie um assunto...'
+                returnKeyType='send'
+                color='white'
+                placeholderTextColor='#c4c4c4'
+                onChangeText={(text) => handleMessage(text)}
+                onSubmitEditing={() => { 
+                  props.sendMessage(message)
+                  close()
+                }}
+                value={message}/>
+            </View>
+            <View style={{alignItems: 'flex-end', marginRight: 5}}>
+              <Text style={styles.cont} >{countChar}/150</Text>
             </View>
           </View>
-        </Modal>)
-
+        </View>
+      </Modal>
+    )
 }
 
 const styles = StyleSheet.create({
