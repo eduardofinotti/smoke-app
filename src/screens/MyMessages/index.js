@@ -37,8 +37,9 @@ export default function MyMessages({ route, navigation }) {
       <SafeAreaView style={styles.container}>
         <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center'}}>
           <TouchableOpacity style={{marginLeft: 10 }} onPress={()=>navigation.navigate('Home')}>
-            <Image source={back} />
+            <Image source={back} style={{height: 22, width: 22}}/>
           </TouchableOpacity>
+
           
           <Text style={styles.title}>{title}</Text>
           
